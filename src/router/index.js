@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 // ()=>component: import(""),     路由懒加载
 // redirect                       路由重定向
 // beforeEnter(to,from,next)      独享路由守卫 to 从哪来 from 到哪去 next 放行
-
+import Layout from "@/Layout/index.vue"
 const routes = [
   {
     path: "/",
@@ -14,13 +14,21 @@ const routes = [
     component: () => import("@/views/Login/Login.vue"),
   },
   {
-    path: "/index",
-    component: () => import("@/views/Index/Index.vue"),
+    path: "",
+    component: Layout,
+    redirect: "/index",
+    children:[
+      {
+        path:"index",
+        component:() => import("@/views/Index/Index.vue"),
+        name:"Index"
+      }
+    ]
   },
   {
     path: "/home",
     name: "主页面",
-    component: () => import("@/views/Home/Home.vue"),
+    component: Layout,
     children: [
       {
         path: "A",

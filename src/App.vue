@@ -6,8 +6,17 @@
 </script>
 
 <template>
-  <router-view></router-view>
+  <router-view class="xxx"></router-view>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+  *{
+    padding: 0;
+    margin: 0;  
+    box-sizing: border-box;
+  }
+  .xxx{
+    max-width: 100vw;
+    // background: $baseBackgroundColor; 
+  }
 </style>
