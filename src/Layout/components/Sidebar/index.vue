@@ -6,6 +6,7 @@
     </el-radio-group> -->
     <el-menu
       :default-active="currentRouterPath"
+      router
       class="el-menu-vertical-demo"
       :collapse="sort.sidebarState"
       :unique-opened="true"
@@ -76,14 +77,10 @@ import {useRouter} from "vue-router"
   };
 </script>
 
-<style>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 400px;
-}
+<style lang="scss">
 .mySidebar {
   height: calc(100vh - 45px);
-  background: #d9ecff;
-  border-right: 1px solid #dcdfe6;
+  background: var(--sidebar-background);
+  border-right: 1px solid var(--sidebar-background);
 }
 </style>

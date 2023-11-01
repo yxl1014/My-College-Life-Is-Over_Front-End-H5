@@ -1,2 +1,23 @@
-// 这里配置 基本配色
-$baseBackgroundColor: rgb(247, 248, 250);
+/*
+  覆盖默认elementUI样式
+*/
+.el-menu {
+  background: var(--sidebar-background) !important;
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
+
+// 修改Header组件的样式
+.el-header {
+  padding: 0;
+  height: 45px;
+}
+
+//重写 el-aside的延迟方式
+.el-aside {
+  transition: width .28s !important;
+  overflow-x: hidden;
+}

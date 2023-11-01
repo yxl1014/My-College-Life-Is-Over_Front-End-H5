@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "serve":"vite",
+    "serve": "vite",
     "dev": "vite --mode dev",
     "prod": "vite --mode prod",
     "build": "vue-tsc --noEmit && vite build --mode prod",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "@vueuse/core": "^10.5.0",
     "axios": "^1.5.1",
     "element-plus": "^2.4.0",
     "pinia": "^2.1.7",

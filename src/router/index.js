@@ -21,7 +21,8 @@ const routes = [
       {
         path:"index",
         component:() => import("@/views/Index/Index.vue"),
-        name:"Index"
+        name:"Index",
+        meta:{title:"工作区"}
       }
     ]
   },
@@ -29,14 +30,17 @@ const routes = [
     path: "/home",
     name: "主页面",
     component: Layout,
+    meta:{title:"Home"},
     children: [
       {
         path: "A",
         component: () => import("@/views/Home/A/A.vue"),
+        meta:{title:"A"}
       },
       {
         path: "B",
         component: () => import("@/views/Home/B/B.vue"),
+        meta:{title:"B"}
       },
     ],
   },

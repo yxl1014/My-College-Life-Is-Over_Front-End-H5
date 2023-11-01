@@ -1,5 +1,9 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+// elementUI官方暗黑模式样式
+import 'element-plus/theme-chalk/dark/css-vars.css'
+// 自定义暗黑模式样式 覆盖官方样式
+import "@/assets/style/my-theme-chalk.scss"
 const app = createApp(App);
 
 // 引入elementUI-plus
