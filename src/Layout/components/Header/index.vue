@@ -3,13 +3,19 @@
     <el-row :gutter="24" justify="space-between">
       <el-col :span="4">
         <div class="headerLogo">
-          <el-image style="width: 45px; height: 45px" :src="logoUrl" fit="contain"/>
+          <el-image style="width: 45px; height: 45px" :src="logoUrl" fit="contain" />
           <span>LoadRunnerX</span>
+        </div>
+      </el-col>
+      <!--登出按钮-->
+      <el-col :span="4">
+        <div class="exitButton">
+          <el-button type="danger" plain @click="exit">登出</el-button>
         </div>
       </el-col>
       <el-col :span="4">
         <div class="headerFun">
-          <el-button :icon="themeStyle.icon" circle @click="updateTheme"/>
+          <el-button :icon="themeStyle.icon" circle @click="updateTheme" />
           <span>看我变不变</span>
         </div>
       </el-col>
@@ -18,15 +24,17 @@
 </template>
 <script setup>
 import url from "@/assets/img/logo_transparent.png"
-import {ref,reactive} from "vue"
-import {Sunny, Moon} from "@element-plus/icons-vue";
-import {useDark, useToggle} from '@vueuse/core'
+import { ref, reactive } from "vue"
+import { Sunny, Moon } from "@element-plus/icons-vue";
+import { useDark, useToggle } from '@vueuse/core'
+import { useRouter } from "vue-router";
 
 let themeStyle = reactive({
   icon: Sunny,// Sunny||Moon
 });
 let isDark = useDark()
 const toggleDark = useToggle(isDark)
+const router = useRouter() // 导入 router
 
 function updateTheme() {
   console.log(isDark)
@@ -34,7 +42,12 @@ function updateTheme() {
   isDark = !(isDark)
   toggleDark()
   themeStyle.icon =
-      isDark ? Moon : Sunny
+    isDark ? Moon : Sunny
+}
+//清理后台
+function exit() {
+  localStorage.removeItem('token');
+  router.replace('/login');
 }
 
 const logoUrl = ref(url + "?" + +new Date());
@@ -63,7 +76,13 @@ const logoUrl = ref(url + "?" + +new Date());
     align-items: center;
   }
 
+  .exitButton {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
 
 }
-
 </style>

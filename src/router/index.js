@@ -17,12 +17,12 @@ const routes = [
     path: "",
     component: Layout,
     redirect: "/index",
-    children:[
+    children: [
       {
-        path:"index",
-        component:() => import("@/views/Index/Index.vue"),
-        name:"Index",
-        meta:{title:"工作区"}
+        path: "index",
+        component: () => import("@/views/Index/Index.vue"),
+        name: "Index",
+        meta: { title: "工作区" }
       }
     ]
   },
@@ -30,23 +30,23 @@ const routes = [
     path: "/home",
     name: "主页面",
     component: Layout,
-    meta:{title:"Home"},
+    meta: { title: "Home" },
     children: [
       {
         path: "A",
         component: () => import("@/views/Home/A/A.vue"),
-        meta:{title:"A"}
+        meta: { title: "A" }
       },
       {
         path: "B",
         component: () => import("@/views/Home/B/B.vue"),
-        meta:{title:"B"}
+        meta: { title: "B" }
       },
     ],
   },
   {
-    path:"/401",
-    component:()=>import("@/views/401/401.vue")
+    path: "/401",
+    component: () => import("@/views/401/401.vue")
   },
   {
     path: "/:pathMatch(.*)",
@@ -67,11 +67,11 @@ router.beforeEach((to, from, next) => {
       next(from.path)
     }
     next();
-  }else{
+  } else {
     if (!token) {
       console.log("111");
       next({ path: "/login" });
-    }else{
+    } else {
       next();
     }
   }
