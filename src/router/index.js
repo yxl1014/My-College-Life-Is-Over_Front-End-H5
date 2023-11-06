@@ -3,10 +3,30 @@ import { createRouter, createWebHistory } from "vue-router";
 // redirect                       路由重定向
 // beforeEnter(to,from,next)      独享路由守卫 to 从哪来 from 到哪去 next 放行
 import Layout from "@/Layout/index.vue"
+import Member from "@/Layout/Member/Member.vue"
+import * as path from "path";
 const routes = [
   {
     path: "/",
     redirect: "/index",
+  },
+  {
+    path:"/member",
+    component:Member,
+    redirect: "/member/login",
+    children: [
+      {
+        path:"login",
+        component:()=>import("@/views/Member/Login.vue"),
+        name:"Login",
+      },
+      {
+        path:"register",
+        component:()=>import("@/views/Member/Register.vue"),
+        name:"Register",
+      }
+
+    ]
   },
   {
     path: "/login",
@@ -30,6 +50,7 @@ const routes = [
     path: "/home",
     name: "主页面",
     component: Layout,
+    redirect: "/home/A",
     meta:{title:"Home"},
     children: [
       {
