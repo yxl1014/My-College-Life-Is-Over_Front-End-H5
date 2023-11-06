@@ -51,7 +51,9 @@
           </div>
           <el-button type="primary" size="large" class="loginBtn" @click="submit">登录</el-button>
           <div class="gotoRegister">
-            <el-link type="primary" href="">没有账号我要免费注册>></el-link>
+            <router-link to="/member/register">
+              <el-link type="primary">没有账号我要免费注册>></el-link>
+            </router-link>
           </div>
         </el-space>
       </div>
@@ -87,10 +89,10 @@ function submit() {
   if (form.userName === "") {
     warningTools("请输入用户名");
     return;
-  }else if (form.password === ""){
+  } else if (form.password === "") {
     warningTools("请输入密码");
     return;
-  }else if (code.value === ""){
+  } else if (code.value === "") {
     warningTools("请输入验证码");
     return;
   }

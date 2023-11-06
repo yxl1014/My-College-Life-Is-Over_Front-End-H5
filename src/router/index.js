@@ -28,11 +28,11 @@ const routes = [
 
     ]
   },
-  {
-    path: "/login",
-    name: "登录页面",
-    component: () => import("@/views/Login/Login.vue"),
-  },
+  // {
+  //   path: "/login",
+  //   name: "登录页面",
+  //   component: () => import("@/views/Login/Login.vue"),
+  // },
   {
     path: "",
     component: Layout,
@@ -83,15 +83,16 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
   console.log(to.path);
-  if (to.path == "/login" || to.path == "/register") {
+  if (to.path == "/member/login" || to.path == "/member/register") {
     if (token) {
       next(from.path)
+    }else{
+      next()
     }
-    next();
   }else{
     if (!token) {
       console.log("111");
-      next({ path: "/login" });
+      next({ path: "/member/login" });
     }else{
       next();
     }

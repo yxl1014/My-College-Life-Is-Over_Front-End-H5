@@ -3,7 +3,7 @@
     <div class="content">
       <div class="module">
         <div class="BG">
-          <el-image style="width: 100%; height: 100%" :src="loginBG" :fit="fit"/>
+          <el-image style="width: 100%; height: 100%" :src="loginBG" fit="fill"/>
         </div>
         <router-view class="memberContainer">
 
