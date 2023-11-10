@@ -9,7 +9,6 @@ export const userInfoStore = defineStore({
                 password:"",
                 isRememberPassword: false,
             }),
-            token:ref(""),
         }
     },
     actions: {
@@ -32,11 +31,6 @@ export const userInfoStore = defineStore({
     persist: {
         enabled: true,
         strategies: [
-            {
-                key: "token",
-                paths:["token"], //存储部分变量
-                storage: localStorage,
-            },
             {
                 key:"userInfo",
                 paths:["userInfo"],

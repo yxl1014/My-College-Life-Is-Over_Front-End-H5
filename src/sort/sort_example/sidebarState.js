@@ -4,7 +4,7 @@ export const sidebarStore = defineStore({
     id: "info", // id是唯一的，如果有多个文件，ID不能重复
     state: () => {
         return {
-            sidebarState:ref(true),
+            sidebarState:ref(false),
         } 
     },
     actions: {

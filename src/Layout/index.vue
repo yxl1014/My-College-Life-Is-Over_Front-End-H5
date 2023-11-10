@@ -6,7 +6,7 @@
           <Header />
         </el-header>
         <el-container>
-          <el-aside :width="sort.sidebarState?'65px':'200px'" style="aaa">
+          <el-aside :width="sort.sidebarState?'65px':'200px'">
             <el-scrollbar>
               <Sidebar />
             </el-scrollbar>

@@ -106,10 +106,8 @@ function submit() {
   * */
   // 如果勾选了 记住密码 把账号密码放进缓存
   if (form.isRememberPassword) {
-    console.log("123")
     sort.setuserInfo(form);
   } else {
-    console.log("456")
     const form = {userName: "", password: "", isRememberPassword: false}
     sort.setuserInfo(form)
   }

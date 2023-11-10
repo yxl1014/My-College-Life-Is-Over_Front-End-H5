@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import {getToken} from "@/utils/auth";
 // ()=>component: import(""),     路由懒加载
 // redirect                       路由重定向
 // beforeEnter(to,from,next)      独享路由守卫 to 从哪来 from 到哪去 next 放行
@@ -81,7 +82,7 @@ const router = createRouter({
 
 // 添加路由守卫 前置路由守卫
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem("token");
+  const token =getToken()
   console.log(to.path);
   if (to.path == "/member/login" || to.path == "/member/register") {
     if (token) {
@@ -90,12 +91,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
   }else{
-    if (!token) {
-      console.log("111");
-      next({ path: "/member/login" });
-    }else{
-      next();
-    }
+    next()
   }
 });
 

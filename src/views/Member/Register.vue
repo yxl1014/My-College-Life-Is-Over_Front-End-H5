@@ -62,15 +62,15 @@ export default {
   methods: {
     onSubmit() {
       // 手动兜底校验
-      console.log(this.$refs.form)
+      // console.log(this.$refs.form)
       // this.$refs.form.validate会让表单自动校验一次
       // valid就会自动接收校验的结果
-      this.$refs.form.validate(valid => {
-        console.log(valid)
-        // valid: true，false
-        // 为false: 表单上会有提示信息
-        // 如果是true,就可以进一步发ajax做登录
-      })
+      // this.$refs.form.validate(valid => {
+      //   console.log(valid)
+      //   // valid: true，false
+      //   // 为false: 表单上会有提示信息
+      //   // 如果是true,就可以进一步发ajax做登录
+      // })
     }
   }
 }
