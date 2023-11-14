@@ -4,6 +4,7 @@ import {getToken} from "@/utils/auth";
 import {useRouter} from "vue-router";
 import {errorTools} from "@/utils/Tools";
 import errorCode from "@/utils/errorCode";
+import {tansParams} from "@/utils/path";
 // 引入env配置文件
 const env = import.meta.env
 // 是否显示重新登录

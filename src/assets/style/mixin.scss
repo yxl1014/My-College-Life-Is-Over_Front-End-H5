@@ -22,3 +22,27 @@
   overflow-x: hidden;
 }
 
+//重写注册的 el-steps title的字体大小
+.register_steps{
+  .el-step__title{
+    font-size: 11px;
+  }
+}
+//去除register下tabs的 tab的下划线
+.register{
+  .el-tabs__header{
+    display: none;
+  }
+}
+
+//register 解决 正则验证不通过 显示提示文字显示不全bug
+.register{
+  .el-form{
+    .is-error {
+      & .el-form-item__error--inline {
+        margin-bottom: 4px; // 当包含子元素 el-form-item__error--inline 时的 margin-bottom 值
+      }
+    }
+
+  }
+}
