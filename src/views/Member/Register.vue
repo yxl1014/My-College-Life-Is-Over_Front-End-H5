@@ -74,6 +74,7 @@
                     placeholder="请输入邮箱验证码"
                     :prefix-icon="Code"
                     size="large"
+                    maxlength="4"
                 />
                 <!--垂直分割线-->
                 <div class="divider"></div>
@@ -112,6 +113,7 @@
                     placeholder="请输入手机验证码"
                     :prefix-icon="Code"
                     size="large"
+                    maxlength="4"
                 />
                 <!--垂直分割线-->
                 <div class="divider"></div>
@@ -206,6 +208,7 @@ import Code from "@/components/Icon/Code.vue";
 import success8 from "@/assets/img/success8.gif"
 import {userInfoStore} from "@/sort/sorts/login.js"
 import {encrypt} from "@/utils/jsencrpyt"
+import {errorTools, successTools} from "@/utils/Tools";
 
 const sort=userInfoStore()
 const router = useRouter();
@@ -213,7 +216,7 @@ const router = useRouter();
 const SuccessGifSrc=ref(success8+ "?" + +new Date())
 // 当前步骤 账号密码-->邮箱/手机号-->设置密保-->完成
 //            0         1           2       3
-let currentStep = ref(0);
+let currentStep = ref(1);
 // 初始化accountForm ref
 const accountFormRef = ref(null);
 // 初始化 emailPhoneFormRef
@@ -321,9 +324,11 @@ const emailPhoneRules = reactive({
   emailCode:[
     {
       validator(_, value, callback) {
-        if (!emailBtn.disabled&&value.length!=4) {
+        const emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{3,4})$/ ;
+
+        if (emailRegex.test(emailPhoneForm.email)&&value.length!=4) {
           callback(new Error('请正确输入邮箱验证码'))
-        }else if (emailBtn.disabled&&value.length!=0){
+        }else if ((!emailRegex.test(emailPhoneForm.email))&&value.length!=0){
           callback(new Error('请勿输入验证码'))
         } else {
           callback()
@@ -352,9 +357,10 @@ const emailPhoneRules = reactive({
   phoneCode:[
     {
       validator(_, value, callback) {
-        if (!phoneBtn.disabled&&value.length!=4) {
+        const phoneRegex = /^1[3-9]\d{9}$/;
+        if (phoneRegex.test(emailPhoneForm.phone)&&value.length!=4) {
           callback(new Error('请正确输入手机验证码'))
-        }else if (phoneBtn.disabled&&value.length!=0){
+        }else if ((!phoneRegex.test(emailPhoneForm.phone))&&value.length!=0){
           callback(new Error('请勿输入验证码'))
         } else {
           callback()
@@ -403,6 +409,7 @@ let submitting=reactive({
 function nextStep(formEl) {
   formEl.validate(valid => {
     if (valid) {
+      // 如果ref为注册的话 发请求
       if(formEl==confidentialityFormRef.value){
         submitting.state=true
         submitting.text="注册中"
@@ -417,9 +424,17 @@ function nextStep(formEl) {
           }
           sort.setuserInfo(form)
         },1000)
-      }else{
+      }else if (formEl==emailPhoneFormRef.value){
+        if (emailPhoneForm.emailCode!="1234"){
+          return errorTools("验证码错误");
+        }else if (emailPhoneForm.phoneCode!="1234"){
+          return errorTools("验证码错误");
+        }
+      }
+      else{
         currentStep.value++;
       }
+
     }
   })
 
@@ -440,8 +455,15 @@ function getEmailCode(EL){
 }
 // 手机验证码的倒计时
 function doLoop(seconds,EL) {
+  successTools("验证码已发送!")
   seconds = seconds ? seconds : 60;
   EL.btnText = seconds + "s后获取";
+  setTimeout(()=>{
+    if (seconds > 0) {
+      EL.btnText = seconds + "s后获取";
+      --seconds;
+    }
+  },1000)
   let countdown = setInterval(() => {
     if (seconds > 0) {
       EL.btnText = seconds + "s后获取";
