@@ -216,7 +216,7 @@ const router = useRouter();
 const SuccessGifSrc=ref(success8+ "?" + +new Date())
 // 当前步骤 账号密码-->邮箱/手机号-->设置密保-->完成
 //            0         1           2       3
-let currentStep = ref(1);
+let currentStep = ref(0);
 // 初始化accountForm ref
 const accountFormRef = ref(null);
 // 初始化 emailPhoneFormRef
