@@ -8,7 +8,7 @@ xcopy  "%source_folder%" "%destination_folder%" /E /I /Y
 cd /d "%git_folder%"
 git status
 git add .
-git commit -m "脚本提交"
+git commit -m "脚本提交111"
 git push
 echo copy file success！
 pause

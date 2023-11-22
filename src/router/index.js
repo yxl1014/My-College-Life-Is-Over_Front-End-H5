@@ -25,7 +25,12 @@ const routes = [
         path:"register",
         component:()=>import("@/views/Member/Register.vue"),
         name:"Register",
-      }
+      },
+      {
+        path:"retrievePassword",
+        component:()=>import("@/views/Member/RetrievePassword.vue"),
+        name:"RetrievePassword",
+      },
 
     ]
   },

@@ -28,8 +28,8 @@
     font-size: 11px;
   }
 }
-//去除register下tabs的 tab的下划线
-.register{
+//去除register、RetrievePassword下tabs的 tab的下划线
+.register,.RetrievePassword{
   .el-tabs__header{
     display: none;
   }

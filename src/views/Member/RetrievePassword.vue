@@ -1,13 +1,7 @@
 <template>
-  <div class="register">
-    <div class="registerContainer">
-      <span class="title">注册 LoadRunnerX 压力测试平台</span>
-      <el-steps :active="currentStep" finish-status="success" process-status="finish" align-center :space="100" class="register_steps">
-        <el-step title="填写账号密码"/>
-        <el-step title="绑定邮箱/手机号"/>
-        <el-step title="设置密保"/>
-        <el-step title="完成注册"/>
-      </el-steps>
+  <div class="RetrievePassword">
+    <div class="RetrievePasswordContainer">
+      <span class="title">LoadRunnerX 密码找回</span>
       <el-tabs v-model="currentStep" class="tabs">
         <el-tab-pane :name="0">
           <el-form :model="accountForm" ref="accountFormRef" :rules="accountRules" class="myForm">
@@ -21,51 +15,67 @@
                   class="user_name"
               />
             </el-form-item>
-            <el-form-item prop="password">
-              <el-input
-                  v-model.trim="accountForm.password"
-                  placeholder="请输入密码"
-                  type="password"
-                  class="password"
-                  clearable
-                  show-password
-                  :prefix-icon="Lock"
-                  size="large"
-              />
-            </el-form-item>
-            <el-form-item prop="confirmPassword">
-              <el-input
-                  v-model.trim="accountForm.confirmPassword"
-                  placeholder="请再次输入密码"
-                  type="password"
-                  clearable
-                  show-password
-                  :prefix-icon="Lock"
-                  size="large"
-              />
-            </el-form-item>
             <el-form-item>
               <el-button type="primary" size="large" style="width: 100%;" @click="nextStep(accountFormRef)"> 下一步</el-button>
             </el-form-item>
           </el-form>
         </el-tab-pane>
+        <el-tab-pane :name="0.5">
+          <div class="RPMethod">
+            <div class="PRitem" @click="currentStep=1">
+              <el-button bg size="large" style="font-size: 18px"> 密保找回</el-button>
+            </div>
+            <div class="PRitem" @click="currentStep=2">
+              <el-button bg size="large" style="font-size: 18px"> 邮箱找回</el-button>
+            </div>
+            <div class="PRitem" @click="currentStep=3">
+              <el-button bg size="large" style="font-size: 18px"> 手机找回</el-button>
+            </div>
+          </div>
+        </el-tab-pane>
+        <!--        密保找回-->
         <el-tab-pane :name="1">
-          <el-form :model="emailPhoneForm" ref="emailPhoneFormRef" :rules="emailPhoneRules" class="myForm">
+          <el-form :model="confidentialityForm" ref="confidentialityFormRef" :rules="confidentialityRules" class="myForm">
+            <el-form-item>
+              <el-text tag="b">{{ confidentialityForm.problemOne }}</el-text>
+            </el-form-item>
+            <el-form-item prop="answerOne">
+              <el-input
+                  v-model.trim="confidentialityForm.answerOne"
+                  placeholder="请输入密保答案一"
+                  :prefix-icon="Document"
+                  size="large"
+                  maxlength="4"
+              />
+            </el-form-item>
+            <el-form-item>
+              <el-text tag="b">{{ confidentialityForm.problemTwo }}</el-text>
+            </el-form-item>
+            <el-form-item prop="answerTwo">
+              <el-input
+                  v-model.trim="confidentialityForm.answerTwo"
+                  placeholder="请输入密保答案二"
+                  :prefix-icon="Document"
+                  size="large"
+                  maxlength="4"
+              />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="large" style="width: 100%;" @click="nextStep(confidentialityFormRef)"> 下一步</el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <!--        邮箱找回-->
+        <el-tab-pane :name="2">
+          <el-form ref="emailPhoneFormRef" :model="emailPhoneForm" :rules="emailPhoneRules" class="myForm">
             <el-form-item prop="email">
-              <el-tooltip
-                  class="box-item"
-                  effect="dark"
-                  content="如不需绑定邮箱不要填写直接下一步即可"
-                  placement="top"
-              >
-                <el-input
-                    v-model.trim="emailPhoneForm.email"
-                    placeholder="请输入邮箱地址"
-                    clearable
-                    :prefix-icon="Message"
-                    size="large"
-                />
-              </el-tooltip>
+              <el-input
+                  v-model.trim="emailPhoneForm.email"
+                  placeholder="请输入邮箱"
+                  clearable
+                  :prefix-icon="Iphone"
+                  size="large"
+              />
             </el-form-item>
             <el-form-item prop="emailCode">
               <div class="emailCode">
@@ -90,21 +100,22 @@
                 >
               </div>
             </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="large" style="width: 100%;" @click="nextStep(emailPhoneFormRef)"> 下一步</el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <!--        手机号找回-->
+        <el-tab-pane :name="3">
+          <el-form ref="emailPhoneFormRef" :model="emailPhoneForm" :rules="emailPhoneRules" class="myForm">
             <el-form-item prop="phone">
-              <el-tooltip
-                  class="box-item"
-                  effect="dark"
-                  content="如不需绑定手机不要填写直接下一步即可"
-                  placement="top"
-              >
-                <el-input
-                    v-model.trim="emailPhoneForm.phone"
-                    placeholder="请输入手机号"
-                    clearable
-                    :prefix-icon="Iphone"
-                    size="large"
-                />
-              </el-tooltip>
+              <el-input
+                  v-model.trim="emailPhoneForm.phone"
+                  placeholder="请输入手机号"
+                  clearable
+                  :prefix-icon="Iphone"
+                  size="large"
+              />
             </el-form-item>
             <el-form-item prop="phoneCode">
               <div class="phoneCode">
@@ -134,67 +145,42 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane :name="2">
-          <el-form :model="confidentialityForm" ref="confidentialityFormRef" :rules="confidentialityRules" class="myForm">
-            <el-form-item prop="problemOne">
+        <!--        设置新密码-->
+        <el-tab-pane :name="5">
+          <el-form ref="newPasswordFormRef" :model="newPasswordForm" :rules="newPasswordFormRules" class="myForm">
+            <el-form-item prop="password">
               <el-input
-                  v-model.trim="confidentialityForm.problemOne"
-                  placeholder="请输入密保问题一"
+                  v-model.trim="newPasswordForm.password"
+                  placeholder="请输入密码"
+                  type="password"
+                  class="password"
                   clearable
-                  :prefix-icon="EditPen"
+                  show-password
+                  :prefix-icon="Lock"
                   size="large"
               />
             </el-form-item>
-            <el-form-item prop="answerOne">
+            <el-form-item prop="confirmPassword">
               <el-input
-                  v-model.trim="confidentialityForm.answerOne"
-                  placeholder="请输入密保问题答案一"
+                  v-model.trim="newPasswordForm.confirmPassword"
+                  placeholder="请再次输入密码"
+                  type="password"
                   clearable
-                  :prefix-icon="Document"
-                  size="large"
-              />
-            </el-form-item>
-            <el-form-item prop="problemTwo">
-              <el-input
-                  v-model.trim="confidentialityForm.problemTwo"
-                  placeholder="请输入密保问题二"
-                  clearable
-                  :prefix-icon="EditPen"
-                  size="large"
-              />
-            </el-form-item>
-            <el-form-item prop="answerTwo">
-              <el-input
-                  v-model.trim="confidentialityForm.answerTwo"
-                  placeholder="请输入密保问题答案二"
-                  :prefix-icon="Document"
+                  show-password
+                  :prefix-icon="Lock"
                   size="large"
               />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="large" style="width: 100%;" @click="nextStep(confidentialityFormRef)" :loading="submitting.state"> 注册</el-button>
+              <el-button type="primary" size="large" style="width: 100%;" @click="nextStep(newPasswordFormRef)"> 确认</el-button>
             </el-form-item>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane :name="4">
-          <div style="width: 100%;min-height: 272px;display: flex;flex-direction: column;align-items: center">
-            <el-text type="success" >注册成功！</el-text>
-            <img
-                :src="SuccessGifSrc"
-                width="100"
-                height="100"
-                alt="Girl has dropped her ice cream."
-            />
-          </div>
-        </el-tab-pane>
       </el-tabs>
-      <div class="gotoLogin" :style="{justifyContent:currentStep>0&&currentStep!=4?'space-between':'right'}">
-        <el-link type="primary" @click="backStep" v-if="currentStep>0&&currentStep!=4">上一步</el-link>
-        <router-link to="/member/login" v-if="currentStep!=4">
-          <el-link type="primary" >已有账号去登录>></el-link>
-        </router-link>
-        <router-link to="/member/login" v-else>
-          <el-link type="primary" >立即登录>></el-link>
+      <div class="gotoLogin" :style="{justifyContent:currentStep>0?'space-between':'right'}">
+        <el-link type="primary" @click="backStep" v-if="currentStep>0">上一步</el-link>
+        <router-link to="/member/login">
+          <el-link type="primary">去登录>></el-link>
         </router-link>
       </div>
     </div>
@@ -203,17 +189,17 @@
 <script setup>
 import {useRouter} from "vue-router";
 import {reactive, ref, onMounted, computed, watch} from "vue";
-import {User, Lock, Message, Iphone, EditPen,Document} from "@element-plus/icons-vue";
+import {User, Lock, Message, Iphone, EditPen, Document} from "@element-plus/icons-vue";
 import Code from "@/components/Icon/Code.vue";
 import success8 from "@/assets/img/success8.gif"
 import {userInfoStore} from "@/sort/sorts/login.js"
 import {encrypt} from "@/utils/jsencrpyt"
 import {errorTools, successTools} from "@/utils/Tools";
 
-const sort=userInfoStore()
+const sort = userInfoStore()
 const router = useRouter();
 // 注册成功动态图片
-const SuccessGifSrc=ref(success8+ "?" + +new Date())
+const SuccessGifSrc = ref(success8 + "?" + +new Date())
 // 当前步骤 账号密码-->邮箱/手机号-->设置密保-->完成
 //            0         1           2       3
 let currentStep = ref(0);
@@ -223,13 +209,12 @@ const accountFormRef = ref(null);
 const emailPhoneFormRef = ref(null);
 // 初始化 confidentialityFormRef
 const confidentialityFormRef = ref(null);
-
+// 新密码
+const newPasswordFormRef = ref("");
 
 // 账号密码表单内容
 const accountForm = reactive({
   userName: "",
-  password: "",
-  confirmPassword: "",
 });
 // 邮箱、手机号表单内容
 const emailPhoneForm = reactive({
@@ -240,12 +225,16 @@ const emailPhoneForm = reactive({
 });
 // 密保表单内容
 const confidentialityForm = reactive({
-  problemOne: "",
+  problemOne: "我的手机号是？",
   answerOne: "",
-  problemTwo: "",
+  problemTwo: "我的邮箱是？",
   answerTwo: "",
 });
-
+// 新密码内容
+const newPasswordForm = reactive({
+  password: "",
+  confirmPassword: ""
+})
 
 // 账号密码表单规则
 const accountRules = reactive({
@@ -265,6 +254,86 @@ const accountRules = reactive({
       trigger: "change"
     }
   ],
+})
+// 邮箱、手机号表单规则
+const emailPhoneRules = reactive({
+  email: [
+    {required: true, message: '请输入邮箱!', trigger: 'change'},
+    {
+      validator(_, value, callback) {
+        // 邮箱正则
+        const emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{3,4})$/;
+        if ((!emailRegex.test(value)) && value != "") {
+          emailBtn.disabled = true;
+          callback(new Error('请输入正确邮箱'))
+        } else {
+          value == "" ? emailBtn.disabled = true : emailBtn.disabled = false;
+          callback()
+        }
+      },
+      trigger: "change"
+    }
+  ],
+  emailCode: [
+    {
+      validator(_, value, callback) {
+        const emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{3,4})$/;
+
+        if (emailRegex.test(emailPhoneForm.email) && value.length != 4) {
+          callback(new Error('请正确输入邮箱验证码'))
+        } else if ((!emailRegex.test(emailPhoneForm.email)) && value.length != 0) {
+          callback(new Error('请勿输入验证码'))
+        } else {
+          callback()
+        }
+      },
+      trigger: "change"
+    }
+  ],
+  phone: [
+    {required: true, message: '请输入手机号码!', trigger: 'change'},
+    {
+      validator(_, value, callback) {
+        // 手机号正则
+        const phoneRegex = /^1[3-9]\d{9}$/;
+        if ((!phoneRegex.test(value)) && value != "") {
+          phoneBtn.disabled = true;
+          callback(new Error('请输入正确手机号'))
+        } else {
+          value == "" ? phoneBtn.disabled = true : phoneBtn.disabled = false;
+          callback()
+        }
+      },
+      trigger: "change"
+    }
+  ],
+  phoneCode: [
+    {
+      validator(_, value, callback) {
+        const phoneRegex = /^1[3-9]\d{9}$/;
+        if (phoneRegex.test(emailPhoneForm.phone) && value.length != 4) {
+          callback(new Error('请正确输入手机验证码'))
+        } else if ((!phoneRegex.test(emailPhoneForm.phone)) && value.length != 0) {
+          callback(new Error('请勿输入验证码'))
+        } else {
+          callback()
+        }
+      },
+      trigger: "change"
+    }
+  ]
+})
+// 密保表单规则
+const confidentialityRules = reactive({
+  answerOne: [
+    {required: true, message: '请输入密保答案一', trigger: 'change'},
+  ],
+  answerTwo: [
+    {required: true, message: '请输入密保答案二', trigger: 'change'},
+  ]
+})
+// 新密码规则
+const newPasswordFormRules = reactive({
   password: [
     {required: true, message: '请输入密码!', trigger: 'change'},
     {
@@ -291,179 +360,101 @@ const accountRules = reactive({
         //      如果通过了规则检验，就直接调用callback()
         //      如果没有通过规则检验，就调用callback(错误对象，在错误对象中说明原因)
         //         例如：callback(new Error('错误说明'))
-        if (value != accountForm.password) {
+        if (value != newPasswordForm.password) {
           callback(new Error('两次密码输入不相符'))
         } else {
           callback()
         }
-        // console.log(rule, value, callback)
       },
       trigger: "change"
     }
   ]
 })
-// 邮箱、手机号表单规则
-const emailPhoneRules = reactive({
-  email: [
-    // {required: true, message: '请输入邮箱!', trigger: 'change'},
-    {
-      validator(_, value, callback) {
-        // 邮箱正则
-        const emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{3,4})$/ ;
-        if ((!emailRegex.test(value))&&value!="") {
-          emailBtn.disabled=true;
-          callback(new Error('请输入正确邮箱'))
-        } else {
-          value==""?emailBtn.disabled=true:emailBtn.disabled=false;
-          callback()
-        }
-      },
-      trigger: "change"
-    }
-  ],
-  emailCode:[
-    {
-      validator(_, value, callback) {
-        const emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{3,4})$/ ;
 
-        if (emailRegex.test(emailPhoneForm.email)&&value.length!=4) {
-          callback(new Error('请正确输入邮箱验证码'))
-        }else if ((!emailRegex.test(emailPhoneForm.email))&&value.length!=0){
-          callback(new Error('请勿输入验证码'))
-        } else {
-          callback()
-        }
-      },
-      trigger: "change"
-    }
-  ],
-  phone: [
-    // {required: true, message: '请输入手机号码!', trigger: 'change'},
-    {
-      validator(_, value, callback) {
-        // 手机号正则
-        const phoneRegex = /^1[3-9]\d{9}$/;
-        if ((!phoneRegex.test(value))&&value!="") {
-          phoneBtn.disabled=true;
-          callback(new Error('请输入正确手机号'))
-        } else {
-          value==""?phoneBtn.disabled=true: phoneBtn.disabled=false;
-          callback()
-        }
-      },
-      trigger: "change"
-    }
-  ],
-  phoneCode:[
-    {
-      validator(_, value, callback) {
-        const phoneRegex = /^1[3-9]\d{9}$/;
-        if (phoneRegex.test(emailPhoneForm.phone)&&value.length!=4) {
-          callback(new Error('请正确输入手机验证码'))
-        }else if ((!phoneRegex.test(emailPhoneForm.phone))&&value.length!=0){
-          callback(new Error('请勿输入验证码'))
-        } else {
-          callback()
-        }
-      },
-      trigger: "change"
-    }
-  ]
-})
-// 密保表单规则
-const confidentialityRules = reactive({
-  problemOne: [
-    {required: true, message: '请输入密保问题一', trigger: 'change'},
-  ],
-  answerOne: [
-    {required: true, message: '请输入密保答案一', trigger: 'change'},
-  ],
-  problemTwo: [
-    {required: true, message: '请输入密保问题二', trigger: 'change'},
-  ],
-  answerTwo: [
-    {required: true, message: '请输入密保答案二', trigger: 'change'},
-  ]
-})
 
 // 邮箱验证码按钮属性
-const emailBtn=reactive({
-  type:"primary",
-  btnText:"获取验证码",
+const emailBtn = reactive({
+  type: "primary",
+  btnText: "获取验证码",
   disabled: true,
 })
 // 手机验证码按钮属性
-const phoneBtn=reactive({
-  type:"primary",
-  btnText:"获取验证码",
+const phoneBtn = reactive({
+  type: "primary",
+  btnText: "获取验证码",
   disabled: true,
 })
 
 // 正在提交的按钮状态
-let submitting=reactive({
-  state:false,
-  text:"注册中"
+let submitting = reactive({
+  state: false,
+  text: "注册中"
 });
 
 // 下一步
 function nextStep(formEl) {
   formEl.validate(valid => {
     if (valid) {
-      // 如果ref为注册的话 发请求
-      if(formEl==confidentialityFormRef.value){
-        submitting.state=true
-        submitting.text="注册中"
-        setTimeout(()=>{
-          currentStep.value=4
-          submitting.state=false
-          submitting.text="注册"
-          const form ={
-            userName:accountForm.userName,
-            password:encrypt(accountForm.password),
-            isRememberPassword:true
-          }
-          sort.setuserInfo(form)
-        },1000)
-      }else if (formEl==emailPhoneFormRef.value&&(emailPhoneForm.email.length!=0||emailPhoneForm.phone!=0)){
-        if (emailPhoneForm.emailCode!="1234"){
-          return errorTools("验证码错误");
-        }else if (emailPhoneForm.phoneCode!="1234"){
-          return errorTools("验证码错误");
+      if (formEl == accountFormRef.value) {
+        currentStep.value = 0.5
+      } else if (formEl == confidentialityFormRef.value) {
+        //   发送请求 验证密保是否正确
+        if (confidentialityForm.answerOne.length != 0 && confidentialityForm.answerTwo.length != 0) {
+          currentStep.value = 5
+        } else {
+          errorTools("请输入的密保答案不正确！");
         }
+      } else if (formEl == emailPhoneFormRef.value) {
+        console.log("sb")
+        if (emailPhoneForm.phoneCode == 1234 || emailPhoneForm.emailCode == 1234) {
+          console.log(emailPhoneForm.emailCode)
+          currentStep.value = 5
+        } else {
+          errorTools("验证码错误！")
+        }
+      } else if (formEl == newPasswordFormRef.value) {
+        successTools("修改密码成功!");
+        router.replace("/member/login")
       }
-      else{
-        currentStep.value++;
-      }
-
     }
   })
 
 }
+
 // 上一步
 function backStep() {
-  currentStep.value--
+  if (currentStep.value == 1|| currentStep.value == 2|| currentStep.value == 3){
+    currentStep.value = 0.5
+  }else if (currentStep.value==0.5){
+    currentStep.value = 0
+  }else {
+    rest([emailPhoneForm,confidentialityForm])
+    currentStep.value=0.5
+  }
 }
+
 // 获取邮箱验证码
-function getEmailCode(EL){
-  EL.type="";
+function getEmailCode(EL) {
+  EL.type = "";
   EL.disabled = true;
   EL.btnText = "请稍候...";
   // 延迟500毫秒
   setTimeout(() => {
-    doLoop(60,EL);
+    doLoop(60, EL);
   }, 500);
 }
-// 手机验证码的倒计时
-function doLoop(seconds,EL) {
+
+// 验证码的倒计时
+function doLoop(seconds, EL) {
   successTools("验证码已发送!")
   seconds = seconds ? seconds : 60;
   EL.btnText = seconds + "s后获取";
-  setTimeout(()=>{
+  setTimeout(() => {
     if (seconds > 0) {
       EL.btnText = seconds + "s后获取";
       --seconds;
     }
-  },1000)
+  }, 1000)
   let countdown = setInterval(() => {
     if (seconds > 0) {
       EL.btnText = seconds + "s后获取";
@@ -471,7 +462,7 @@ function doLoop(seconds,EL) {
     } else {
       EL.btnText = "获取验证码";
       EL.disabled = false;
-      EL.type="primary";
+      EL.type = "primary";
       clearInterval(countdown);
     }
   }, 1000);
@@ -493,7 +484,7 @@ watch(() => accountForm.userName, (newCount, oldCount) => {
   }
 })
 // accountForm.password监听器
-watch(() => accountForm.password, (newCount, oldCount) => {
+watch(() => newPasswordForm.password, (newCount, oldCount) => {
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
   if (newCount.length == 1) {
     document.querySelector(".password").parentNode.parentNode.style.marginBottom = "41px";
@@ -507,15 +498,23 @@ watch(() => accountForm.password, (newCount, oldCount) => {
     }
   }
 })
+
+function rest(FormArr){
+  FormArr.forEach((item)=>{
+    for (const itemKey in item) {
+      item[itemKey] = "";
+    }
+  })
+}
 </script>
 <style lang="scss" scope>
-.register {
+.RetrievePassword {
   flex: 1;
   height: 100%;
   display: flex;
   justify-content: center;
 
-  .registerContainer {
+  .RetrievePasswordContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -526,11 +525,24 @@ watch(() => accountForm.password, (newCount, oldCount) => {
       margin-bottom: 10px;
     }
 
-    .register_steps {
-      width: 350px;
-      margin-bottom: 10px;
-      margin-top: 5px;
+    .tabs {
+      width: 100%;
+      min-height: 252px;
+      margin-top: 10px;
+
+      .RPMethod {
+        width: 100%;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        .PRitem {
+          margin-top: 30px;
+        }
+      }
     }
+
 
     .myForm {
       width: 250px;
@@ -539,18 +551,20 @@ watch(() => accountForm.password, (newCount, oldCount) => {
         cursor: text;
       }
 
-      .emailCode,.phoneCode {
+      .emailCode, .phoneCode {
         width: 100%;
         display: flex;
         align-items: center;
-        .divider{
+
+        .divider {
           width: 1.5px;
           height: 25px;
           background: #dcdfe6;
           position: absolute;
           right: 90px;
         }
-        .btnCode{
+
+        .btnCode {
           min-width: 70px;
           text-align: center;
           position: absolute;
