@@ -19,7 +19,6 @@ import router from "@/router/index.js";
 
 // 引入elementUI 图标
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-
 // 应用引入elementUI 图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);

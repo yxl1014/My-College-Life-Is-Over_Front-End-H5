@@ -13,10 +13,10 @@
         </div>
         <el-button :icon="search.icon" circle />
       </el-col>
-      <el-col :span="8" v-else style="display: flex;">
+      <el-col :span="1" v-else style="display: flex;">
         <el-button :icon="search.icon" circle @click="showSearchInput" style="margin-left: 80%;" />
       </el-col>
-      <el-col :span="4">
+      <el-col :span="1">
         <div class="headerFun">
           <el-button :icon="themeStyle.icon" circle @click="updateTheme" />
         </div>
@@ -47,7 +47,7 @@ function updateTheme() {
   isDark = !(isDark)
   toggleDark()
   themeStyle.icon =
-    isDark ? Moon : Sunny
+      isDark ? Moon : Sunny
 }
 function showSearchInput() {
   search.showInput = true

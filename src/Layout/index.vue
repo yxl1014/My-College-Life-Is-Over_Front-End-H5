@@ -3,20 +3,22 @@
     <div class="common-layout">
       <el-container>
         <el-header>
-          <Header />
+          <Header/>
         </el-header>
         <el-container>
           <el-aside :width="sort.sidebarState?'65px':'200px'">
             <el-scrollbar>
-              <Sidebar />
+              <Sidebar/>
             </el-scrollbar>
           </el-aside>
           <el-container direction="vertical">
-            <div class="MyPageHeader" >
-              <PageHeader />
+            <div class="MyPageHeader">
+              <PageHeader/>
             </div>
             <el-main>
-              <MainContext />
+              <el-scrollbar :height="size">
+                <MainContext/>
+              </el-scrollbar>
             </el-main>
           </el-container>
         </el-container>
@@ -29,8 +31,13 @@ import MainContext from "@/Layout/components/MainContext/index.vue";
 import Sidebar from "@/Layout/components/Sidebar/index.vue";
 import Header from "@/Layout/components/Header/index.vue";
 import PageHeader from "@/Layout/components/PageHeader/index.vue";
-import { sidebarStore } from "@/sort/sort_example/sidebarState.js";
+import {sidebarStore} from "@/sort/sort_example/sidebarState.js";
+import {computed} from "vue"
+
 const sort = sidebarStore();
+const size = computed(() => {
+  return document.documentElement.clientHeight - 45 - 98;
+})
 </script>
 <style lang="scss">
 

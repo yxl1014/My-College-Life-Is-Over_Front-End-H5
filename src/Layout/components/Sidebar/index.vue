@@ -14,8 +14,8 @@
       @close="handleClose"
     >
       <el-menu-item index="/index">
-        <el-icon><icon-menu /></el-icon>
-        <template #title>工作区</template>
+        <el-icon><HomeFilled /></el-icon>
+        <template #title>首页</template>
       </el-menu-item>
       <el-sub-menu index="/home">
         <template #title>
