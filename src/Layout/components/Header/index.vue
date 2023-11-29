@@ -1,27 +1,40 @@
 <template>
   <div class="container">
-    <el-row :gutter="24" justify="space-between">
+    <el-row :gutter="24" justify="space-between" style="display: flex;align-items: center;">
       <el-col :span="4">
         <div class="headerLogo">
-          <el-image style="width: 45px; height: 45px" :src="logoUrl" fit="contain"/>
+          <el-image style="width: 45px; height: 45px" :src="logoUrl" fit="contain" />
           <span>LoadRunnerX</span>
         </div>
       </el-col>
+      <el-col :span="8" style="display: flex;" v-if="search.showInput === true">
+        <div style="width: 80%;">
+          <el-input v-model="search.value" placeholder="Please input" v-on:blur="handleBlur" v-on:change="actionSearch" />
+        </div>
+        <el-button :icon="search.icon" circle />
+      </el-col>
+      <el-col :span="8" v-else style="display: flex;">
+        <el-button :icon="search.icon" circle @click="showSearchInput" style="margin-left: 80%;" />
+      </el-col>
       <el-col :span="4">
         <div class="headerFun">
-          <el-button :icon="themeStyle.icon" circle @click="updateTheme"/>
-          <span>看我变不变</span>
+          <el-button :icon="themeStyle.icon" circle @click="updateTheme" />
         </div>
       </el-col>
     </el-row>
   </div>
 </template>
 <script setup>
+import { useRouter } from 'vue-router';
 import url from "@/assets/img/logo_transparent.png"
-import {ref,reactive} from "vue"
-import {Sunny, Moon} from "@element-plus/icons-vue";
-import {useDark, useToggle} from '@vueuse/core'
-
+import { ref, reactive, createApp } from "vue"
+import { Sunny, Moon, Search } from "@element-plus/icons-vue";
+import { useDark, useToggle } from '@vueuse/core'
+let search = reactive({
+  value: '',
+  icon: Search,
+  showInput: false
+});
 let themeStyle = reactive({
   icon: Sunny,// Sunny||Moon
 });
@@ -34,10 +47,41 @@ function updateTheme() {
   isDark = !(isDark)
   toggleDark()
   themeStyle.icon =
-      isDark ? Moon : Sunny
+    isDark ? Moon : Sunny
 }
+function showSearchInput() {
+  search.showInput = true
+}
+function handleBlur() {
+  search.showInput = false
+}
+const router = useRouter();
+function actionSearch() {
+  console.log(search.value)
+  const searchRegex = new RegExp(search.value, 'i');
 
+  // 遍历路由进行模糊搜索
+  const matchingRoutes = [];
+
+  function searchRoutes(routes) {
+    for (const route of routes) {
+      if (route.meta && route.meta.title && searchRegex.test(route.meta.title)) {
+        matchingRoutes.push(route);
+      }
+
+      if (route.children) {
+        searchRoutes(route.children);
+      }
+    }
+  }
+
+  searchRoutes(router.options.routes);
+
+  // 处理匹配到的路由，你可以在这里更新组件状态或执行其他操作
+  console.log(matchingRoutes);
+}
 const logoUrl = ref(url + "?" + +new Date());
+
 </script>
 <style lang="scss" scope>
 .container {
@@ -65,5 +109,4 @@ const logoUrl = ref(url + "?" + +new Date());
 
 
 }
-
 </style>
