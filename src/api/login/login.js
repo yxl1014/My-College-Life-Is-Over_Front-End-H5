@@ -3,7 +3,7 @@ import request from "@/utils/request.js"
 // 获取验证码
 export function getCodeImg() {
     return request({
-        url: '/captchaImage',
+        url: '/valida_code/get_picture',
         headers: {
             isToken: false
         },

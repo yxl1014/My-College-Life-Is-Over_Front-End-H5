@@ -22,7 +22,7 @@
   background-color: var(--body-content-whiteAndblack);
   .top {
     width: 100%;
-    height:calc(100vh - 45px - 98px);
+    height:calc(100vh - 45px - 108px);
     background:url("@/assets/img/f12.png") no-repeat;
     background-size:cover;
     display: flex;

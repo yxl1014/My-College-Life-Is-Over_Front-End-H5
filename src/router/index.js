@@ -5,6 +5,8 @@ import {getToken} from "@/utils/auth";
 // beforeEnter(to,from,next)      独享路由守卫 to 从哪来 from 到哪去 next 放行
 import Layout from "@/Layout/index.vue"
 import Member from "@/Layout/Member/Member.vue"
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 import * as path from "path";
 const routes = [
   {
@@ -87,6 +89,8 @@ const router = createRouter({
 
 // 添加路由守卫 前置路由守卫
 router.beforeEach((to, from, next) => {
+  // 开启加载条
+  NProgress.start();
   const token =getToken()
   console.log(to.path);
   if (to.path == "/member/login" || to.path == "/member/register") {
@@ -99,5 +103,9 @@ router.beforeEach((to, from, next) => {
     next()
   }
 });
+router.afterEach(()=>{
+  // 关闭加载条
+  NProgress.done();
+})
 
 export default router;
