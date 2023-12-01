@@ -3,20 +3,22 @@
     <div class="common-layout">
       <el-container>
         <el-header>
-          <Header />
+          <Header/>
         </el-header>
         <el-container>
           <el-aside :width="sort.sidebarState?'65px':'200px'">
             <el-scrollbar>
-              <Sidebar />
+              <Sidebar/>
             </el-scrollbar>
           </el-aside>
           <el-container direction="vertical">
-            <div class="MyPageHeader" >
-              <PageHeader />
+            <div class="MyPageHeader">
+              <PageHeader/>
             </div>
             <el-main>
-              <MainContext />
+              <el-scrollbar :height="size">
+                <MainContext/>
+              </el-scrollbar>
             </el-main>
           </el-container>
         </el-container>
@@ -29,8 +31,28 @@ import MainContext from "@/Layout/components/MainContext/index.vue";
 import Sidebar from "@/Layout/components/Sidebar/index.vue";
 import Header from "@/Layout/components/Header/index.vue";
 import PageHeader from "@/Layout/components/PageHeader/index.vue";
-import { sidebarStore } from "@/sort/sort_example/sidebarState.js";
+import {sidebarStore} from "@/sort/sort_example/sidebarState.js";
+import {computed, ref, onMounted, watch} from "vue"
+import {useRoute} from "vue-router";
+
+onMounted(() => {
+  // 添加监听事件  只要浏览器高度发生变化就重新计算content的高度
+  window.addEventListener('resize', () => {
+    size.value = window.innerHeight - 45 - heightSize.value;
+  })
+})
+
+const route = useRoute();
+const heightSize=ref(Object.keys(route.matched[0].meta).length > 0 ?  112: 98)
 const sort = sidebarStore();
+const size = ref(window.innerHeight)
+// 监听路由变化 从而改变 content的高度
+watch(route,()=>{
+  // 这个是可变高度
+  heightSize.value = Object.keys(route.matched[0].meta).length > 0 ? 112 :98
+  console.log("aaa",heightSize.value)
+  size.value=window.innerHeight - 45 - heightSize.value;
+},{immediate : true})
 </script>
 <style lang="scss">
 

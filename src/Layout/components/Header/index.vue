@@ -17,7 +17,7 @@
         </div>
         <el-button :icon="search.icon" circle @click="showSearchInput" />
       </el-col>
-      <el-col :span="4">
+      <el-col :span="1">
         <div class="headerFun">
           <el-button :icon="themeStyle.icon" circle @click="updateTheme" />
         </div>

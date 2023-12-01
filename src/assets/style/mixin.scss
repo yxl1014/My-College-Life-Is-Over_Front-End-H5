@@ -46,3 +46,21 @@
 
   }
 }
+
+//去除 mainContent部分的内边距
+.el-main{
+  padding: 0px;
+}
+
+//改变 加载条颜色
+#nprogress .bar {
+  background: #66B1FF !important; // 自定义颜色
+  height: 2px !important; // 自定义高度
+}
+
+//改变el-menu-item 被选中的背景颜色
+.el-sub-menu.is-active{
+  .el-sub-menu__title{
+    color: var(--el-menu-active-color);
+  }
+}

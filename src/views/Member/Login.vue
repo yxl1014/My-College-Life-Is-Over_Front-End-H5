@@ -322,9 +322,10 @@ function submit() {
 // 获取验证码
 function getCode() {
   getCodeImg().then((res) => {
+    console.log(res)
     if (res.code == 200) {
-      CodeImg.value = "data:image/gif;base64," + res.img;
-      form.uuid = res.uuid
+      CodeImg.value = "data:image/gif;base64," + res.base64_img;
+      form.uuid = res.vc_id
     }
   });
 }

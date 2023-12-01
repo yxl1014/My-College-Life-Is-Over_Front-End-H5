@@ -5,6 +5,7 @@ import {useRouter} from "vue-router";
 import {errorTools} from "@/utils/Tools";
 import errorCode from "@/utils/errorCode";
 import {tansParams} from "@/utils/path";
+import NProgress from "nprogress";
 // 引入env配置文件
 const env = import.meta.env
 // 是否显示重新登录
@@ -23,6 +24,7 @@ console.log("当前环境", env.VITE_BASE_API);
 // request拦截器
 service.interceptors.request.use(
     (config) => {
+        NProgress.start();//开启 加载条动画
         // 是否需要设置 token
         const isToken = (config.headers || {}).isToken === false;
         if (getToken() && !isToken) {
@@ -78,6 +80,7 @@ service.interceptors.request.use(
 );
 // 响应拦截器
 service.interceptors.response.use((res) => {
+    NProgress.done();
     // 未设置状态码则默认成功状态
     const code = res.data.code || 200;
     // 获取错误信息

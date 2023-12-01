@@ -15,7 +15,7 @@ export default ({ mode }) => {
       port: 8081, //访问的端口号
       proxy: {
         [env.VITE_BASE_API]: {
-          target: "http://121.37.82.194:8083",
+          target: "http://120.26.67.97:18080",
           changeOrigin: true, //是否允许跨域
           rewrite: (path) => path.replace(env.VITE_BASE_API, ""),
           // 正则匹配 替换路径为 ''
