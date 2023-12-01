@@ -62,12 +62,12 @@ const routes = [
       {
         path: "A",
         component: () => import("@/views/Home/A/A.vue"),
-        meta: { title: "A" }
+        meta: { title: "任务A" }
       },
       {
         path: "B",
         component: () => import("@/views/Home/B/B.vue"),
-        meta: { title: "B" }
+        meta: { title: "任务B" }
       },
     ],
   },
