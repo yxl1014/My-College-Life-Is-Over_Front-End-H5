@@ -324,8 +324,8 @@ function getCode() {
   getCodeImg().then((res) => {
     console.log(res)
     if (res.code == 200) {
-      CodeImg.value = "data:image/gif;base64," + res.base64_img;
-      form.uuid = res.vc_id
+      CodeImg.value = "data:image/gif;base64," + res.base64Img;
+      form.uuid = res.vcId
     }
   });
 }

@@ -209,6 +209,7 @@ import success8 from "@/assets/img/success8.gif"
 import {userInfoStore} from "@/sort/sorts/login.js"
 import {encrypt} from "@/utils/jsencrpyt"
 import {errorTools, successTools} from "@/utils/Tools";
+import {register} from "@/api/register/register";
 
 const sort=userInfoStore()
 const router = useRouter();
@@ -413,23 +414,30 @@ function nextStep(formEl) {
       if(formEl==confidentialityFormRef.value){
         submitting.state=true
         submitting.text="注册中"
-        setTimeout(()=>{
-          currentStep.value=4
-          submitting.state=false
-          submitting.text="注册"
-          const form ={
-            userName:accountForm.userName,
-            password:encrypt(accountForm.password),
-            isRememberPassword:true
-          }
-          sort.setuserInfo(form)
-        },1000)
-      }else if (formEl==emailPhoneFormRef.value&&(emailPhoneForm.email.length!=0||emailPhoneForm.phone!=0)){
-        if (emailPhoneForm.emailCode!="1234"){
-          return errorTools("验证码错误");
-        }else if (emailPhoneForm.phoneCode!="1234"){
-          return errorTools("验证码错误");
+        const form={
+          "user_name":accountForm.userName,
+          "user_password":accountForm.password,
+          "user_sec_problem_1":confidentialityForm.problemOne,
+          "user_sec_problem_2":confidentialityForm.problemTwo,
+          "user_sec_answer_1":confidentialityForm.answerOne,
+          "user_sec_answer_2":confidentialityForm.answerTwo,
         }
+        register(form).then(res=>{
+          if(res.code==200){
+            successTools("注册成功");
+            currentStep.value=4
+            submitting.state=false
+            submitting.text="注册"
+            const form ={
+              userName:accountForm.userName,
+              password:encrypt(accountForm.password),
+              isRememberPassword:true
+            }
+            sort.setuserInfo(form)
+          }else {
+            console.log("err-->",res)
+          }
+        })
       }
       else{
         currentStep.value++;

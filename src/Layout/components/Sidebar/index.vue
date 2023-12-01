@@ -63,7 +63,7 @@ import {useRouter} from "vue-router"
   console.log(sort.sidebarState);
 
   const router=useRouter()
-  let currentRouterPath=reactive(toRaw(router).currentRoute.value.fullPath)
+  let currentRouterPath=ref(toRaw(router).currentRoute.value.fullPath)
   console.log(toRaw(router).currentRoute.value.fullPath);
 
   // 是否折叠菜单栏

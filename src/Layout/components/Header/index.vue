@@ -36,7 +36,7 @@ let search = reactive({
   showInput: false
 });
 let themeStyle = reactive({
-  icon: Sunny,// Sunny||Moon
+  icon: Sunny,// Sunny||MoonSunny
 });
 let isDark = useDark()
 const toggleDark = useToggle(isDark)

@@ -10,7 +10,7 @@
         </router-view>
       </div>
       <div class="partners">
-        <el-image :src="cctv" style="height: 100%;opacity: 0.3" :lazy="true"/>
+        <el-image :src="cctv" style="height: 100%;opacity: 0.3" />
       </div>
       <div class="copyright">
         <el-text>版权所有 © 2023-2024天津市压力测试平台小组</el-text>
