@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import {getToken} from "@/utils/auth";
+import { getToken } from "@/utils/auth";
 // ()=>component: import(""),     路由懒加载
 // redirect                       路由重定向
 // beforeEnter(to,from,next)      独享路由守卫 to 从哪来 from 到哪去 next 放行
@@ -14,24 +14,24 @@ const routes = [
     redirect: "/index",
   },
   {
-    path:"/member",
-    component:Member,
+    path: "/member",
+    component: Member,
     redirect: "/member/login",
     children: [
       {
-        path:"login",
-        component:()=>import("@/views/Member/Login.vue"),
-        name:"Login",
+        path: "login",
+        component: () => import("@/views/Member/Login.vue"),
+        name: "Login",
       },
       {
-        path:"register",
-        component:()=>import("@/views/Member/Register.vue"),
-        name:"Register",
+        path: "register",
+        component: () => import("@/views/Member/Register.vue"),
+        name: "Register",
       },
       {
-        path:"retrievePassword",
-        component:()=>import("@/views/Member/RetrievePassword.vue"),
-        name:"RetrievePassword",
+        path: "retrievePassword",
+        component: () => import("@/views/Member/RetrievePassword.vue"),
+        name: "RetrievePassword",
       },
 
     ]
@@ -45,12 +45,12 @@ const routes = [
     path: "",
     component: Layout,
     redirect: "/index",
-    children:[
+    children: [
       {
-        path:"index",
-        component:() => import("@/views/Index/Index.vue"),
-        name:"Index",
-        meta:{title:"首页"}
+        path: "index",
+        component: () => import("@/views/Index/Index.vue"),
+        name: "Index",
+        meta: { title: "首页" }
       }
     ]
   },
@@ -59,23 +59,23 @@ const routes = [
     name: "主页面",
     component: Layout,
     redirect: "/home/A",
-    meta:{title:"Home"},
+    meta: { title: "Home" },
     children: [
       {
         path: "A",
         component: () => import("@/views/Home/A/A.vue"),
-        meta:{title:"A"}
+        meta: { title: "A" }
       },
       {
         path: "B",
         component: () => import("@/views/Home/B/B.vue"),
-        meta:{title:"B"}
+        meta: { title: "B" }
       },
     ],
   },
   {
-    path:"/401",
-    component:()=>import("@/views/401/401.vue")
+    path: "/401",
+    component: () => import("@/views/401/401.vue")
   },
   {
     path: "/:pathMatch(.*)",
@@ -91,19 +91,19 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // 开启加载条
   NProgress.start();
-  const token =getToken()
+  const token = getToken()
   console.log(to.path);
   if (to.path == "/member/login" || to.path == "/member/register") {
     if (token) {
       next(from.path)
-    }else{
+    } else {
       next()
     }
-  }else{
+  } else {
     next()
   }
 });
-router.afterEach(()=>{
+router.afterEach(() => {
   // 关闭加载条
   NProgress.done();
 })

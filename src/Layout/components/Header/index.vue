@@ -7,14 +7,15 @@
           <span>LoadRunnerX</span>
         </div>
       </el-col>
-      <el-col :span="8" style="display: flex;" v-if="search.showInput === true">
+      <el-col :span="8" style="display: flex;">
         <div style="width: 80%;">
-          <el-input v-model="search.value" placeholder="Please input" v-on:blur="handleBlur" v-on:change="actionSearch" />
+          <el-input v-model="search.value" placeholder="Please input" v-on:blur="handleBlur" v-on:change="actionSearch"
+            v-if="search.showInput === true" />
+          <div v-if="search.value !== ''" style="background-color: aliceblue; width: 100%; height: 400%; ">
+
+          </div>
         </div>
-        <el-button :icon="search.icon" circle />
-      </el-col>
-      <el-col :span="1" v-else style="display: flex;">
-        <el-button :icon="search.icon" circle @click="showSearchInput" style="margin-left: 80%;" />
+        <el-button :icon="search.icon" circle @click="showSearchInput" />
       </el-col>
       <el-col :span="1">
         <div class="headerFun">
@@ -47,7 +48,7 @@ function updateTheme() {
   isDark = !(isDark)
   toggleDark()
   themeStyle.icon =
-      isDark ? Moon : Sunny
+    isDark ? Moon : Sunny
 }
 function showSearchInput() {
   search.showInput = true
