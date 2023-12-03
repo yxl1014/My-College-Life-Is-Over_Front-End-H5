@@ -3,12 +3,18 @@
   --sidebar-background:#d9ecff; //侧边栏 背景颜色
   --header-background:#ffffff ;//头部状态栏 背景颜色
   --body-header-background:#ffffff ;//body头部 背景颜色
-  --body-content-whiteAndblack:#ffffff
+  --body-content-whiteAndblack:#ffffff;
+  --body-content-illustration-background:#e6e6e654;
+  --body-content-illustration-svgBackground:#ffffff;
+  --body-content-middle-subtitle-color:#6f6f6f;
 }
 html.dark {
   --theme-color: #135fad;
   --sidebar-background: #404549FF;
   --header-background:#404549FF;
   --body-header-background:#404549FF ;//body头部 背景颜色
-  --body-content-whiteAndblack: #1B1B2AFF
+  --body-content-whiteAndblack: #1B1B2AFF;
+  --body-content-illustration-background:#151521;
+  --body-content-illustration-svgBackground:#1B1B2AFF;
+  --body-content-middle-subtitle-color:#cdcdde;
 }

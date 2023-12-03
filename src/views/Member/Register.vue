@@ -236,8 +236,10 @@ const accountForm = reactive({
 const emailPhoneForm = reactive({
   email: "",
   emailCode: "",
+  emailUUID:"",
   phone: "",
   phoneCode: "",
+  phoneUUID:""
 });
 // 密保表单内容
 const confidentialityForm = reactive({
@@ -415,12 +417,22 @@ function nextStep(formEl) {
         submitting.state=true
         submitting.text="注册中"
         const form={
-          "user_name":accountForm.userName,
-          "user_password":accountForm.password,
-          "user_sec_problem_1":confidentialityForm.problemOne,
-          "user_sec_problem_2":confidentialityForm.problemTwo,
-          "user_sec_answer_1":confidentialityForm.answerOne,
-          "user_sec_answer_2":confidentialityForm.answerTwo,
+          userName:accountForm.userName,
+          userPassword:accountForm.password,
+          userSecProblem1:confidentialityForm.problemOne,
+          userSecProblem2:confidentialityForm.problemTwo,
+          userSecAnswer1:confidentialityForm.answerOne,
+          userSecAnswer2:confidentialityForm.answerTwo,
+          userSysEmail:emailPhoneForm.email,
+          vcEmailCode:{
+            validation:emailPhoneForm.emailCode,
+            vcId:emailPhoneForm.emailUUID,
+          },
+          userTelephone:emailPhoneForm.phone,
+          vcTelephoneCode:{
+            validation:emailPhoneForm.phoneCode,
+            vcId:emailPhoneForm.phoneUUID,
+          }
         }
         register(form).then(res=>{
           if(res.code==200){

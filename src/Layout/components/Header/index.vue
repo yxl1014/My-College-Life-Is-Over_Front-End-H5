@@ -18,8 +18,8 @@
         <el-button :icon="search.icon" circle @click="showSearchInput" />
       </el-col>
       <el-col :span="1">
-        <div class="headerFun">
-          <el-button :icon="themeStyle.icon" circle @click="updateTheme" />
+        <div class="headerFun" @click="updateTheme">
+          <el-button :icon="themeStyle.icon" circle  />
         </div>
       </el-col>
     </el-row>
@@ -28,9 +28,11 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import url from "@/assets/img/logo_transparent.png"
-import { ref, reactive, createApp } from "vue"
+import { ref, reactive, createApp,onMounted } from "vue"
 import { Sunny, Moon, Search } from "@element-plus/icons-vue";
 import { useDark, useToggle } from '@vueuse/core'
+import {themeModeStore} from "@/sort/sort_example/themeMode";
+const sort=themeModeStore()
 let search = reactive({
   value: '',
   icon: Search,
@@ -47,6 +49,7 @@ function updateTheme() {
   // themeState.value = !(themeState.value)
   isDark = !(isDark)
   toggleDark()
+  sort.updateThemeMode(isDark)
   themeStyle.icon =
     isDark ? Moon : Sunny
 }

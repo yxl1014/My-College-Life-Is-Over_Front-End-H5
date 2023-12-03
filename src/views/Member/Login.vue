@@ -271,10 +271,12 @@ function submit() {
         * */
         // 如果勾选了 记住密码 把账号密码放进缓存
         const loginForm = {
-          username: form.userName,
-          password: form.password,
-          code: form.code,
-          uuid: form.uuid
+          userName: form.userName,
+          userPassword: form.password,
+          vcPictureCode:{
+            result:form.code,
+            vcId:form.uuid
+          }
         }
         login(loginForm).then(res => {
           if (res.code == 200) {
@@ -290,7 +292,7 @@ function submit() {
               sort.setuserInfo(form)
             }
             // 把token放到本地缓存
-            setToken(res.token)
+            setToken(res.uuid)
             // 跳转到主页面
             router.replace("/index");
           }

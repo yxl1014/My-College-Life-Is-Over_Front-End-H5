@@ -9,6 +9,7 @@ export const userInfoStore = defineStore({
                 password:"",
                 isRememberPassword: false,
             }),
+            token:ref("")
         }
     },
     actions: {
