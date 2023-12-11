@@ -34,10 +34,11 @@
                       clearable
                       size="large"
                       @keydown.enter="submit(accountFormRef)"
+                      maxlength="6"
                   />
                 </div>
-                <div class="codePicture" @click="getCode">
-                  <el-image style="width: 100%;height: 100%" :src="CodeImg" fit="fill"/>
+                <div class="codePicture" @click="getCode('account')">
+                  <el-image style="width: 100%;height: 100%" :src="form.codeImg" fit="fill"/>
                 </div>
               </div>
             </el-form-item>
@@ -66,13 +67,30 @@
               />
             </el-form-item>
             <el-form-item prop="code">
+              <div class="codeImg">
+                <div class="codeInput">
+                  <el-input
+                      v-model.trim="phoneForm.code"
+                      placeholder="请输入验证码"
+                      clearable
+                      size="large"
+                      maxlength="6"
+                  />
+                </div>
+                <div class="codePicture" @click="getCode('phone')">
+                  <el-image style="width: 100%;height: 100%" :src="phoneForm.codeImg" fit="fill"/>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="phoneCode">
               <div class="phoneCode">
                 <el-input
-                    v-model.trim="phoneForm.code"
+                    v-model.trim="phoneForm.phoneCode"
                     placeholder="请输入验证码"
                     type="password"
                     :prefix-icon="Lock"
                     size="large"
+                    maxlength="6"
                 />
                 <!--垂直分割线-->
                 <div class="divider"></div>
@@ -81,7 +99,7 @@
                     link
                     :type="phoneBtn.type"
                     class="btnCode"
-                    :disabled="phoneBtn.disabled"
+                    :disabled="(phoneBtn.disabled)||(phoneForm.code.length==0)"
                     @click="getEmailCode(phoneBtn)"
                 >{{ phoneBtn.btnText }}
                 </el-button
@@ -103,13 +121,30 @@
               />
             </el-form-item>
             <el-form-item prop="code">
+              <div class="codeImg">
+                <div class="codeInput">
+                  <el-input
+                      v-model.trim="emailForm.code"
+                      placeholder="请输入验证码"
+                      clearable
+                      size="large"
+                      maxlength="6"
+                  />
+                </div>
+                <div class="codePicture" @click="getCode('email')">
+                  <el-image style="width: 100%;height: 100%" :src="emailForm.codeImg" fit="fill"/>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="emailCode">
               <div class="emailCode">
                 <el-input
-                    v-model.trim="emailForm.code"
+                    v-model.trim="emailForm.emailCode"
                     placeholder="请输入验证码"
                     type="password"
                     :prefix-icon="Lock"
                     size="large"
+                    maxlength="6"
                 />
                 <!--垂直分割线-->
                 <div class="divider"></div>
@@ -118,7 +153,7 @@
                     link
                     :type="emailBtn.type"
                     class="btnCode"
-                    :disabled="emailBtn.disabled"
+                    :disabled="(emailBtn.disabled)||(emailForm.code==0)"
                     @click="getEmailCode(emailBtn)"
                 >{{ emailBtn.btnText }}
                 </el-button
@@ -154,7 +189,9 @@ import {successTools} from "@/utils/Tools";
 // 初始化 获取图片验证码
 onMounted(() => {
 //   获取验证码
-  getCode();
+  getCode('account');
+  getCode('phone');
+  getCode('email');
 });
 
 const router = useRouter();
@@ -174,18 +211,25 @@ const form = reactive({
   isRememberPassword: sort.userInfo.isRememberPassword,
   userName: sort.userInfo.userName,
   password: decrypt(sort.userInfo.password),
-  code: sort.userInfo.code,
+  code: "",
   uuid: "",
+  codeImg: ""
 });
 // phone表单内容
 const phoneForm = reactive({
   phone: "",
-  code: ""
+  uuid: "",
+  code: "",
+  phoneCode: "",
+  codeImg: ""
 })
 // email表单内容
 const emailForm = reactive({
   email: "",
-  code: ""
+  code: "",
+  emailCode: "",
+  codeImg: "",
+  uuid: "",
 })
 
 
@@ -206,7 +250,7 @@ const accountRules = reactive({
 // phone表单规则
 const phoneFormRules = reactive({
   phone: [
-    // {required: true, message: '请输入手机号码!', trigger: 'change'},
+    {required: true, message: '请输入手机号码!', trigger: 'change'},
     {
       validator(_, value, callback) {
         // 手机号正则
@@ -222,30 +266,36 @@ const phoneFormRules = reactive({
       trigger: "change"
     }
   ],
-  code: [
+  code:[
+    {required: true, message: '请输入验证码!', trigger: 'change'},
+  ],
+  phoneCode: [
     {required: true, message: '请输入验证码!', trigger: 'change'},
   ]
 })
 // email表单规则
 const emailFormRules = reactive({
   email: [
-    // {required: true, message: '请输入邮箱!', trigger: 'change'},
+    {required: true, message: '请输入邮箱!', trigger: 'change'},
     {
       validator(_, value, callback) {
         // 邮箱正则
-        const emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{3,4})$/ ;
-        if ((!emailRegex.test(value))&&value!="") {
-          emailBtn.disabled=true;
+        const emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{3,4})$/;
+        if ((!emailRegex.test(value)) && value != "") {
+          emailBtn.disabled = true;
           callback(new Error('请输入正确邮箱'))
         } else {
-          value==""?emailBtn.disabled=true:emailBtn.disabled=false;
+          value == "" ? emailBtn.disabled = true : emailBtn.disabled = false;
           callback()
         }
       },
       trigger: "change"
     }
   ],
-  code: [
+  code:[
+    {required: true, message: '请输入验证码!', trigger: 'change'},
+  ],
+  emailCode: [
     {required: true, message: '请输入验证码!', trigger: 'change'},
   ]
 })
@@ -273,9 +323,9 @@ function submit() {
         const loginForm = {
           userName: form.userName,
           userPassword: form.password,
-          vcPictureCode:{
-            result:form.code,
-            vcId:form.uuid
+          vcPictureCode: {
+            result: form.code,
+            vcId: form.uuid
           }
         }
         login(loginForm).then(res => {
@@ -298,7 +348,7 @@ function submit() {
           }
         }).catch((err) => {
           console.log("errMsg--->", err.message)
-          getCode()
+          getCode('account')
         }).finally(() => {
           loginState.value = false
         })
@@ -322,12 +372,20 @@ function submit() {
 }
 
 // 获取验证码
-function getCode() {
+function getCode(type) {
   getCodeImg().then((res) => {
     console.log(res)
     if (res.code == 200) {
-      CodeImg.value = "data:image/gif;base64," + res.base64Img;
-      form.uuid = res.vcId
+      if (type == "account") {
+        form.codeImg = "data:image/gif;base64," + res.base64Img;
+        form.uuid = res.vcId
+      } else if (type == "phone") {
+        phoneForm.codeImg = "data:image/gif;base64," + res.base64Img;
+        phoneForm.uuid = res.vcId
+      } else if (type == "email") {
+        emailForm.codeImg = "data:image/gif;base64," + res.base64Img;
+        emailForm.uuid = res.vcId
+      }
     }
   });
 }

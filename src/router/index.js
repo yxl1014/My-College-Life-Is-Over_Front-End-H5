@@ -74,6 +74,21 @@ const routes = [
     ],
   },
   {
+    path: "/user",
+    name: "个人内容",
+    component: Layout,
+    redirect: "/user/personalCenter",
+    meta: { title: "用户" },
+    children: [
+      {
+        path: "personalCenter",
+        component: () => import("@/views/personalCenter/personalCenter.vue"),
+        meta: { title: "个人中心" }
+      },
+    ],
+  },
+
+  {
     path: "/401",
     component: () => import("@/views/401/401.vue")
   },
@@ -92,7 +107,7 @@ router.beforeEach((to, from, next) => {
   // 开启加载条
   NProgress.start();
   const token = getToken()
-  console.log(to.path);
+  // console.log(to.path);
   if (to.path == "/member/login" || to.path == "/member/register") {
     if (token) {
       next(from.path)

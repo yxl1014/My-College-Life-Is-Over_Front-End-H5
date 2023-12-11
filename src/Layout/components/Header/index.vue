@@ -19,7 +19,8 @@
       </el-col>
       <el-col :span="1">
         <div class="headerFun" @click="updateTheme">
-          <el-button :icon="themeStyle.icon" circle  />
+          <el-button v-if="isDark" :icon="Moon" circle  />
+          <el-button v-else :icon="Sunny" circle  />
         </div>
       </el-col>
     </el-row>
@@ -38,21 +39,25 @@ let search = reactive({
   icon: Search,
   showInput: false
 });
-let themeStyle = reactive({
-  icon: Sunny,// Sunny||MoonSunny
-});
 let isDark = useDark()
 const toggleDark = useToggle(isDark)
-
+onMounted(()=>{
+  console.log(isDark)
+  sort.updateThemeMode(isDark.value)
+})
 function updateTheme() {
   console.log(isDark)
-  // themeState.value = !(themeState.value)
-  isDark = !(isDark)
+  // isDark = !(isDark.value)
   toggleDark()
-  sort.updateThemeMode(isDark)
-  themeStyle.icon =
-    isDark ? Moon : Sunny
+  sort.updateThemeMode(isDark.value)
 }
+
+
+
+
+
+
+
 function showSearchInput() {
   search.showInput = true
 }

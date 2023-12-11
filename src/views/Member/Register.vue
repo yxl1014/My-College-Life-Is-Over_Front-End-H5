@@ -84,7 +84,7 @@
                     :type="emailBtn.type"
                     class="btnCode"
                     :disabled="emailBtn.disabled"
-                    @click="getEmailCode(emailBtn)"
+                    @click="getEmailPhoneCode(emailBtn)"
                 >{{ emailBtn.btnText }}
                 </el-button
                 >
@@ -123,7 +123,7 @@
                     :type="phoneBtn.type"
                     class="btnCode"
                     :disabled="phoneBtn.disabled"
-                    @click="getEmailCode(phoneBtn)"
+                    @click="getEmailPhoneCode(phoneBtn)"
                 >{{ phoneBtn.btnText }}
                 </el-button
                 >
@@ -178,7 +178,7 @@
         </el-tab-pane>
         <el-tab-pane :name="4">
           <div style="width: 100%;min-height: 272px;display: flex;flex-direction: column;align-items: center">
-            <el-text type="success" >注册成功！</el-text>
+            <el-text type="success">注册成功！</el-text>
             <img
                 :src="SuccessGifSrc"
                 width="100"
@@ -191,10 +191,10 @@
       <div class="gotoLogin" :style="{justifyContent:currentStep>0&&currentStep!=4?'space-between':'right'}">
         <el-link type="primary" @click="backStep" v-if="currentStep>0&&currentStep!=4">上一步</el-link>
         <router-link to="/member/login" v-if="currentStep!=4">
-          <el-link type="primary" >已有账号去登录>></el-link>
+          <el-link type="primary">已有账号去登录>></el-link>
         </router-link>
         <router-link to="/member/login" v-else>
-          <el-link type="primary" >立即登录>></el-link>
+          <el-link type="primary">立即登录>></el-link>
         </router-link>
       </div>
     </div>
@@ -203,18 +203,18 @@
 <script setup>
 import {useRouter} from "vue-router";
 import {reactive, ref, onMounted, computed, watch} from "vue";
-import {User, Lock, Message, Iphone, EditPen,Document} from "@element-plus/icons-vue";
+import {User, Lock, Message, Iphone, EditPen, Document} from "@element-plus/icons-vue";
 import Code from "@/components/Icon/Code.vue";
 import success8 from "@/assets/img/success8.gif"
 import {userInfoStore} from "@/sort/sorts/login.js"
 import {encrypt} from "@/utils/jsencrpyt"
 import {errorTools, successTools} from "@/utils/Tools";
-import {register} from "@/api/register/register";
+import {getEmailCodeApi, getPhoneCodeApi, register} from "@/api/register/register";
 
-const sort=userInfoStore()
+const sort = userInfoStore()
 const router = useRouter();
 // 注册成功动态图片
-const SuccessGifSrc=ref(success8+ "?" + +new Date())
+const SuccessGifSrc = ref(success8 + "?" + +new Date())
 // 当前步骤 账号密码-->邮箱/手机号-->设置密保-->完成
 //            0         1           2       3
 let currentStep = ref(0);
@@ -236,10 +236,10 @@ const accountForm = reactive({
 const emailPhoneForm = reactive({
   email: "",
   emailCode: "",
-  emailUUID:"",
+  emailUUID: "",
   phone: "",
   phoneCode: "",
-  phoneUUID:""
+  phoneUUID: ""
 });
 // 密保表单内容
 const confidentialityForm = reactive({
@@ -312,26 +312,26 @@ const emailPhoneRules = reactive({
     {
       validator(_, value, callback) {
         // 邮箱正则
-        const emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{3,4})$/ ;
-        if ((!emailRegex.test(value))&&value!="") {
-          emailBtn.disabled=true;
+        const emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{3,4})$/;
+        if ((!emailRegex.test(value)) && value != "") {
+          emailBtn.disabled = true;
           callback(new Error('请输入正确邮箱'))
         } else {
-          value==""?emailBtn.disabled=true:emailBtn.disabled=false;
+          value == "" ? emailBtn.disabled = true : emailBtn.disabled = false;
           callback()
         }
       },
       trigger: "change"
     }
   ],
-  emailCode:[
+  emailCode: [
     {
       validator(_, value, callback) {
-        const emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{3,4})$/ ;
+        const emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{3,4})$/;
 
-        if (emailRegex.test(emailPhoneForm.email)&&value.length!=4) {
+        if (emailRegex.test(emailPhoneForm.email) && value.length != 4) {
           callback(new Error('请正确输入邮箱验证码'))
-        }else if ((!emailRegex.test(emailPhoneForm.email))&&value.length!=0){
+        } else if ((!emailRegex.test(emailPhoneForm.email)) && value.length != 0) {
           callback(new Error('请勿输入验证码'))
         } else {
           callback()
@@ -346,24 +346,24 @@ const emailPhoneRules = reactive({
       validator(_, value, callback) {
         // 手机号正则
         const phoneRegex = /^1[3-9]\d{9}$/;
-        if ((!phoneRegex.test(value))&&value!="") {
-          phoneBtn.disabled=true;
+        if ((!phoneRegex.test(value)) && value != "") {
+          phoneBtn.disabled = true;
           callback(new Error('请输入正确手机号'))
         } else {
-          value==""?phoneBtn.disabled=true: phoneBtn.disabled=false;
+          value == "" ? phoneBtn.disabled = true : phoneBtn.disabled = false;
           callback()
         }
       },
       trigger: "change"
     }
   ],
-  phoneCode:[
+  phoneCode: [
     {
       validator(_, value, callback) {
         const phoneRegex = /^1[3-9]\d{9}$/;
-        if (phoneRegex.test(emailPhoneForm.phone)&&value.length!=4) {
+        if (phoneRegex.test(emailPhoneForm.phone) && value.length != 4) {
           callback(new Error('请正确输入手机验证码'))
-        }else if ((!phoneRegex.test(emailPhoneForm.phone))&&value.length!=0){
+        } else if ((!phoneRegex.test(emailPhoneForm.phone)) && value.length != 0) {
           callback(new Error('请勿输入验证码'))
         } else {
           callback()
@@ -390,22 +390,22 @@ const confidentialityRules = reactive({
 })
 
 // 邮箱验证码按钮属性
-const emailBtn=reactive({
-  type:"primary",
-  btnText:"获取验证码",
+const emailBtn = reactive({
+  type: "primary",
+  btnText: "获取验证码",
   disabled: true,
 })
 // 手机验证码按钮属性
-const phoneBtn=reactive({
-  type:"primary",
-  btnText:"获取验证码",
+const phoneBtn = reactive({
+  type: "primary",
+  btnText: "获取验证码",
   disabled: true,
 })
 
 // 正在提交的按钮状态
-let submitting=reactive({
-  state:false,
-  text:"注册中"
+let submitting = reactive({
+  state: false,
+  text: "注册中"
 });
 
 // 下一步
@@ -413,45 +413,44 @@ function nextStep(formEl) {
   formEl.validate(valid => {
     if (valid) {
       // 如果ref为注册的话 发请求
-      if(formEl==confidentialityFormRef.value){
-        submitting.state=true
-        submitting.text="注册中"
-        const form={
-          userName:accountForm.userName,
-          userPassword:accountForm.password,
-          userSecProblem1:confidentialityForm.problemOne,
-          userSecProblem2:confidentialityForm.problemTwo,
-          userSecAnswer1:confidentialityForm.answerOne,
-          userSecAnswer2:confidentialityForm.answerTwo,
-          userSysEmail:emailPhoneForm.email,
-          vcEmailCode:{
-            validation:emailPhoneForm.emailCode,
-            vcId:emailPhoneForm.emailUUID,
+      if (formEl == confidentialityFormRef.value) {
+        submitting.state = true
+        submitting.text = "注册中"
+        const form = {
+          userName: accountForm.userName,
+          userPassword: accountForm.password,
+          userSecProblem1: confidentialityForm.problemOne,
+          userSecProblem2: confidentialityForm.problemTwo,
+          userSecAnswer1: confidentialityForm.answerOne,
+          userSecAnswer2: confidentialityForm.answerTwo,
+          userSysEmail: emailPhoneForm.email,
+          vcEmailCode: {
+            validation: emailPhoneForm.emailCode,
+            vcId: emailPhoneForm.emailUUID,
           },
-          userTelephone:emailPhoneForm.phone,
-          vcTelephoneCode:{
-            validation:emailPhoneForm.phoneCode,
-            vcId:emailPhoneForm.phoneUUID,
+          userTelephone: emailPhoneForm.phone,
+          vcTelephoneCode: {
+            validation: emailPhoneForm.phoneCode,
+            vcId: emailPhoneForm.phoneUUID,
           }
         }
-        register(form).then(res=>{
-          if(res.code==200){
+        register(form).then(res => {
+          if (res.code == 200) {
             successTools("注册成功");
-            currentStep.value=4
-            submitting.state=false
-            submitting.text="注册"
-            const form ={
-              userName:accountForm.userName,
-              password:encrypt(accountForm.password),
-              isRememberPassword:true
+            currentStep.value = 4
+            submitting.state = false
+            submitting.text = "注册"
+            const form = {
+              userName: accountForm.userName,
+              password: encrypt(accountForm.password),
+              isRememberPassword: true
             }
             sort.setuserInfo(form)
-          }else {
-            console.log("err-->",res)
+          } else {
+            console.log("err-->", res)
           }
         })
-      }
-      else{
+      } else {
         currentStep.value++;
       }
 
@@ -459,31 +458,53 @@ function nextStep(formEl) {
   })
 
 }
+
 // 上一步
 function backStep() {
   currentStep.value--
 }
-// 获取邮箱验证码
-function getEmailCode(EL){
-  EL.type="";
+
+// 获取邮箱验证码||获取手机验证码
+function getEmailPhoneCode(EL) {
+  EL.type = "";
   EL.disabled = true;
   EL.btnText = "请稍候...";
-  // 延迟500毫秒
-  setTimeout(() => {
-    doLoop(60,EL);
-  }, 500);
+  if (EL == phoneBtn) {
+    getPhoneCodeApi({phoneNum: emailPhoneForm.phone}).then(res => {
+      if (res.code == 200) {
+        // 延迟500毫秒
+        setTimeout(() => {
+          doLoop(60, EL);
+        }, 500);
+        emailPhoneForm.phoneUUID = res.vcId
+      }
+    })
+
+  } else if (EL == emailBtn) {
+    getEmailCodeApi({emailAddr: emailPhoneForm.email}).then(res => {
+      if (res.code == 200) {
+        // 延迟500毫秒
+        setTimeout(() => {
+          doLoop(60, EL);
+        }, 500);
+        emailPhoneForm.emailUUID = res.vcId
+      }
+    })
+
+  }
 }
+
 // 手机验证码的倒计时
-function doLoop(seconds,EL) {
+function doLoop(seconds, EL) {
   successTools("验证码已发送!")
   seconds = seconds ? seconds : 60;
   EL.btnText = seconds + "s后获取";
-  setTimeout(()=>{
+  setTimeout(() => {
     if (seconds > 0) {
       EL.btnText = seconds + "s后获取";
       --seconds;
     }
-  },1000)
+  }, 1000)
   let countdown = setInterval(() => {
     if (seconds > 0) {
       EL.btnText = seconds + "s后获取";
@@ -491,7 +512,7 @@ function doLoop(seconds,EL) {
     } else {
       EL.btnText = "获取验证码";
       EL.disabled = false;
-      EL.type="primary";
+      EL.type = "primary";
       clearInterval(countdown);
     }
   }, 1000);
@@ -559,18 +580,20 @@ watch(() => accountForm.password, (newCount, oldCount) => {
         cursor: text;
       }
 
-      .emailCode,.phoneCode {
+      .emailCode, .phoneCode {
         width: 100%;
         display: flex;
         align-items: center;
-        .divider{
+
+        .divider {
           width: 1.5px;
           height: 25px;
           background: #dcdfe6;
           position: absolute;
           right: 90px;
         }
-        .btnCode{
+
+        .btnCode {
           min-width: 70px;
           text-align: center;
           position: absolute;

@@ -4,7 +4,7 @@ export const themeModeStore = defineStore({
     id: "mode", // id是唯一的，如果有多个文件，ID不能重复
     state: () => {
         return {
-            mode:ref(true) // true代表亮色模式 代表暗色模式false
+            mode:ref(false) // false代表亮色模式 代表暗色模式true
         }
     },
     actions: {

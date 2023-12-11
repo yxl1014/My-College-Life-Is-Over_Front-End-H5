@@ -5,12 +5,14 @@ import step3 from "@/assets/img/step3.png"
 import step_drak1 from "@/assets/img/step_dark1.png"
 import step_drak2 from "@/assets/img/step_dark2.png"
 import step_drak3 from "@/assets/img/step_dark3.png"
-import {onMounted, ref, onBeforeUnmount,computed} from "vue"
+import {onMounted, ref, onBeforeUnmount, computed} from "vue"
 import {themeModeStore} from "@/sort/sort_example/themeMode";
+import router from "@/router";
 
 onMounted(() => {
   // 添加监听事件  只要浏览器高度发生变化就重新计算content的高度
   window.addEventListener('resize', calculateHeight)
+  console.log("sort.mode-->",sort.mode)
 })
 onBeforeUnmount(() => {
   // 销毁之前去除监听事件
@@ -21,7 +23,8 @@ const scrollContainer = ref(null)
 // 内容区高度
 const size = ref(window.innerHeight - 45 - 98);
 
-const sort=themeModeStore()
+const sort = themeModeStore()
+
 // 初始化内容区高度
 function calculateHeight() {
   size.value = window.innerHeight - 45 - 98;
@@ -47,6 +50,10 @@ function goTop() {
   });
 }
 
+// 立即开始
+const onStart=()=>{
+  router.push("/home/A")
+}
 
 </script>
 
@@ -62,7 +69,7 @@ function goTop() {
         <div class="title">
           <span>年度最强大的<span class="t1">500K+</span>IP池和T级流量专家</span>
           <span>全平台支持<span class="t2">3000G</span>洪水攻击压测！</span>
-          <el-button type="primary" size="large">立即开始</el-button>
+          <el-button type="primary" size="large" @click="onStart">立即开始</el-button>
         </div>
       </div>
       <div class="illustration">
@@ -97,8 +104,9 @@ function goTop() {
           </div>
           <div class="stepItem">
             <div class="picture">
-              <el-image v-if="sort.mode" style="width: 125px; height: 125px" :src="step2" fit="fill"/>
-              <el-image v-else style="width: 125px; height: 125px" :src="step_drak2" fit="fill"/>
+              <el-image v-if="sort.mode" style="width: 125px; height: 125px" :src="step_drak2" fit="fill"/>
+              <el-image v-else style="width: 125px; height: 125px" :src="step2" fit="fill"/>
+
             </div>
             <div class="stepTitle">
               <div class="number">

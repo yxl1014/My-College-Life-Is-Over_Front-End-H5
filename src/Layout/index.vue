@@ -50,7 +50,7 @@ const size = ref(window.innerHeight)
 watch(route,()=>{
   // 这个是可变高度
   heightSize.value = Object.keys(route.matched[0].meta).length > 0 ? 112 :98
-  console.log("aaa",heightSize.value)
+  // console.log("aaa",heightSize.value)
   size.value=window.innerHeight - 45 - heightSize.value;
 },{immediate : true})
 </script>
@@ -59,6 +59,7 @@ watch(route,()=>{
 .MyPageHeader {
   width: 100%;
   margin-top: 10px;
+  margin-bottom: 10px;
   padding: 10px 20px;
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
   background: var(--body-header-background);

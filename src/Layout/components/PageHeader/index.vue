@@ -1,5 +1,5 @@
 <template>
-  <el-page-header>
+  <el-page-header @back="onBack">
     <template #breadcrumb>
       <div>
         <el-icon v-if="sort.sidebarState" class="icon" @click="updateSidebarState(!sort.sidebarState)">
@@ -39,18 +39,18 @@ watch(route,()=>{
 })
 
 function getBreadcrumb() {
-  console.log(route.matched)
+  // console.log(route.matched)
   if (Object.keys(route.matched[0].meta).length > 0) {
     breadList.value = route.matched
   } else {
     breadList.value = []
   }
-  console.log("breadList",breadList.value)
+  // console.log("breadList",breadList.value)
 }
 function getPageName() {
   return route.matched[route.matched.length-1].meta.title
 }
-function goBack(){
+function onBack(){
   router.go(-1)
 }
 </script>
