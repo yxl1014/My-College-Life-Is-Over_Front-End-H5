@@ -52,12 +52,6 @@ function updateTheme() {
   sort.updateThemeMode(isDark.value)
 }
 
-
-
-
-
-
-
 function showSearchInput() {
   search.showInput = true
 }

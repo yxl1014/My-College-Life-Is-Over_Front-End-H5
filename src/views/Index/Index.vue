@@ -58,7 +58,7 @@ const onStart=()=>{
 </script>
 
 <template>
-  <el-scrollbar :height="size" ref="scrollContainer" @scroll="handleScrool">
+<!--  <el-scrollbar :height="size" ref="scrollContainer" @scroll="handleScrool">-->
     <div class="container">
       <div class="goTop" v-if="showGoTop" @click="goTop">
         <el-icon>
@@ -142,7 +142,7 @@ const onStart=()=>{
         </div>
       </div>
     </div>
-  </el-scrollbar>
+<!--  </el-scrollbar>-->
 </template>
 
 <style lang="scss" scoped>

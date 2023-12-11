@@ -43,13 +43,13 @@ onMounted(() => {
 })
 
 const route = useRoute();
-const heightSize=ref(Object.keys(route.matched[0].meta).length > 0 ?  112: 98)
+const heightSize=ref(Object.keys(route.matched[0].meta).length > 0 ?  122: 108)
 const sort = sidebarStore();
 const size = ref(window.innerHeight)
 // 监听路由变化 从而改变 content的高度
 watch(route,()=>{
   // 这个是可变高度
-  heightSize.value = Object.keys(route.matched[0].meta).length > 0 ? 112 :98
+  heightSize.value = Object.keys(route.matched[0].meta).length > 0 ? 122 :108
   // console.log("aaa",heightSize.value)
   size.value=window.innerHeight - 45 - heightSize.value;
 },{immediate : true})
