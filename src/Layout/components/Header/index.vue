@@ -9,18 +9,24 @@
       </el-col>
       <el-col :span="8" style="display: flex;">
         <div style="width: 80%;">
-          <el-input v-model="search.value" placeholder="Please input" v-on:blur="handleBlur" v-on:change="actionSearch"
+          <!-- <el-input v-model="search.value" placeholder="Please input" v-on:blur="handleBlur" v-on:change="actionSearch"
             v-if="search.showInput === true" />
-          <div v-if="search.value !== ''" style="background-color: aliceblue; width: 100%; height: 400%; ">
+          <div v-if="search.value !== ''" style="background-color: aliceblue; width: 100%; height: 400%; "> -->
+          <!-- </div> -->
+          <el-select v-model="search.value" multiple filterable allow-create default-first-option :reserve-keyword="false"
+            placeholder="Please input" v-on:change="actionSearch" v-on:blur="handleBlur" v-if="search.showInput === true">
+            <el-option v-for="item in matchingRoutes" :key="item.meta.title" :label="item.meta.title"
+              :value="item.path" />
+          </el-select>
 
-          </div>
+
         </div>
         <el-button :icon="search.icon" circle @click="showSearchInput" />
       </el-col>
       <el-col :span="1">
         <div class="headerFun" @click="updateTheme">
-          <el-button v-if="isDark" :icon="Moon" circle  />
-          <el-button v-else :icon="Sunny" circle  />
+          <el-button v-if="isDark" :icon="Moon" circle />
+          <el-button v-else :icon="Sunny" circle />
         </div>
       </el-col>
     </el-row>
@@ -29,11 +35,11 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import url from "@/assets/img/logo_transparent.png"
-import { ref, reactive, createApp,onMounted } from "vue"
+import { ref, reactive, createApp, onMounted } from "vue"
 import { Sunny, Moon, Search } from "@element-plus/icons-vue";
 import { useDark, useToggle } from '@vueuse/core'
-import {themeModeStore} from "@/sort/sort_example/themeMode";
-const sort=themeModeStore()
+import { themeModeStore } from "@/sort/sort_example/themeMode";
+const sort = themeModeStore()
 let search = reactive({
   value: '',
   icon: Search,
@@ -41,7 +47,7 @@ let search = reactive({
 });
 let isDark = useDark()
 const toggleDark = useToggle(isDark)
-onMounted(()=>{
+onMounted(() => {
   console.log(isDark)
   sort.updateThemeMode(isDark.value)
 })
