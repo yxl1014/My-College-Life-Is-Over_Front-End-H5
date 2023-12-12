@@ -74,7 +74,7 @@
                     placeholder="请输入邮箱验证码"
                     :prefix-icon="Code"
                     size="large"
-                    maxlength="4"
+                    maxlength="6"
                 />
                 <!--垂直分割线-->
                 <div class="divider"></div>
@@ -113,7 +113,7 @@
                     placeholder="请输入手机验证码"
                     :prefix-icon="Code"
                     size="large"
-                    maxlength="4"
+                    maxlength="6"
                 />
                 <!--垂直分割线-->
                 <div class="divider"></div>
@@ -329,7 +329,7 @@ const emailPhoneRules = reactive({
       validator(_, value, callback) {
         const emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{3,4})$/;
 
-        if (emailRegex.test(emailPhoneForm.email) && value.length != 4) {
+        if (emailRegex.test(emailPhoneForm.email) && value.length != 6) {
           callback(new Error('请正确输入邮箱验证码'))
         } else if ((!emailRegex.test(emailPhoneForm.email)) && value.length != 0) {
           callback(new Error('请勿输入验证码'))
@@ -361,7 +361,7 @@ const emailPhoneRules = reactive({
     {
       validator(_, value, callback) {
         const phoneRegex = /^1[3-9]\d{9}$/;
-        if (phoneRegex.test(emailPhoneForm.phone) && value.length != 4) {
+        if (phoneRegex.test(emailPhoneForm.phone) && value.length != 6) {
           callback(new Error('请正确输入手机验证码'))
         } else if ((!phoneRegex.test(emailPhoneForm.phone)) && value.length != 0) {
           callback(new Error('请勿输入验证码'))
@@ -417,12 +417,21 @@ function nextStep(formEl) {
         submitting.state = true
         submitting.text = "注册中"
         const form = {
+          "userBornDay": "",
+          "userCompany": "",
+          "userGender": "",
+          "userHome": "",
+          "userIdCard": "",
           userName: accountForm.userName,
+          "userNickName": "",
           userPassword: accountForm.password,
+          "userPersonalProfile": "",
           userSecProblem1: confidentialityForm.problemOne,
           userSecProblem2: confidentialityForm.problemTwo,
+          "userSecAnswer3": "",
           userSecAnswer1: confidentialityForm.answerOne,
           userSecAnswer2: confidentialityForm.answerTwo,
+          "userSecProblem3": "",
           userSysEmail: emailPhoneForm.email,
           vcEmailCode: {
             validation: emailPhoneForm.emailCode,
@@ -449,6 +458,9 @@ function nextStep(formEl) {
           } else {
             console.log("err-->", res)
           }
+        }).finally(()=>{
+          submitting.state = false
+          submitting.text = "注册"
         })
       } else {
         currentStep.value++;
@@ -496,7 +508,7 @@ function getEmailPhoneCode(EL) {
 
 // 手机验证码的倒计时
 function doLoop(seconds, EL) {
-  successTools("验证码已发送!")
+  successTools("验证码已发送! 有效期为5分钟")
   seconds = seconds ? seconds : 60;
   EL.btnText = seconds + "s后获取";
   setTimeout(() => {

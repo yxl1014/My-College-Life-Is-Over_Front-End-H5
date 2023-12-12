@@ -16,6 +16,7 @@ export default ({ mode }) => {
       proxy: {
         [env.VITE_BASE_API]: {
           target: "http://120.26.67.97:18080",
+          // target: "http://127.0.0.1:3000",
           changeOrigin: true, //是否允许跨域
           rewrite: (path) => path.replace(env.VITE_BASE_API, ""),
           // 正则匹配 替换路径为 ''

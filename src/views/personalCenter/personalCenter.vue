@@ -12,71 +12,90 @@
             <div class="uploadAvatar">
               <el-upload
                   class="avatar-uploader"
-                  action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+                  action="#"
+                  :http-request="requestUpload"
                   :show-file-list="false"
-                  :on-success="handleAvatarSuccess"
+                  :before-upload="beforeUpload"
               >
-                <img v-if="imageUrl" :src="imageUrl" class="avatar"/>
+                <img v-if="basicInformationForm.avatar" :src="basicInformationForm.avatar" class="avatar" style="width: 120px;height: 120px;border-radius: 50%"/>
                 <el-icon v-else class="avatar-uploader-icon">
                   <Plus/>
                 </el-icon>
               </el-upload>
             </div>
-            <el-divider />
+            <el-divider/>
             <div class="personalInformationItem">
               <div class="key">
-                <el-icon><UserFilled /></el-icon>用户名称
+                <el-icon>
+                  <UserFilled/>
+                </el-icon>
+                用户名称
               </div>
               <div class="value">
-                {{basicInformationForm.userName}}
+                {{ basicInformationForm.nickName }}
               </div>
             </div>
-            <el-divider />
+            <el-divider/>
             <div class="personalInformationItem">
               <div class="key">
-                <el-icon><Iphone /></el-icon>手机号码
+                <el-icon>
+                  <Iphone/>
+                </el-icon>
+                手机号码
               </div>
               <div class="value">
-                {{basicInformationForm.phone}}
+                {{ basicInformationForm.phone }}
               </div>
             </div>
-            <el-divider />
+            <el-divider/>
             <div class="personalInformationItem">
               <div class="key">
-                <el-icon><Message /></el-icon>用户邮箱
+                <el-icon>
+                  <Message/>
+                </el-icon>
+                用户邮箱
               </div>
               <div class="value">
-                {{basicInformationForm.email}}
+                {{ basicInformationForm.email }}
               </div>
             </div>
-            <el-divider />
+            <el-divider/>
             <div class="personalInformationItem">
               <div class="key">
-                <el-icon><Opportunity /></el-icon>是否会员
+                <el-icon>
+                  <Opportunity/>
+                </el-icon>
+                是否注册会员
               </div>
               <div class="value">
-                {{basicInformationForm.isVip}}
+                {{ basicInformationForm.isVip?"已注册":"未注册" }}
               </div>
             </div>
-            <el-divider />
+            <el-divider/>
             <div class="personalInformationItem">
               <div class="key">
-                <el-icon><User /></el-icon>所属角色
+                <el-icon>
+                  <User/>
+                </el-icon>
+                所属角色
               </div>
               <div class="value">
-                {{basicInformationForm.belongingRole}}
+                {{ basicInformationForm.belongingRole==0?"管理员":"用户" }}
               </div>
             </div>
-            <el-divider />
+            <el-divider/>
             <div class="personalInformationItem">
               <div class="key">
-                <el-icon><Calendar /></el-icon>创建日期
+                <el-icon>
+                  <Calendar/>
+                </el-icon>
+                创建日期
               </div>
               <div class="value">
-               {{basicInformationForm.createTime}}
+                {{ basicInformationForm.createTime }}
               </div>
             </div>
-            <el-divider />
+            <el-divider/>
           </div>
         </el-card>
       </el-col>
@@ -91,8 +110,8 @@
             <el-tabs v-model="activeName" class="demo-tabs">
               <el-tab-pane label="基本资料" name="first">
                 <el-form :model="basicInformationForm" :rules="basicInformationRules" label-width="80px">
-                  <el-form-item label="用户昵称" prop="userName">
-                    <el-input v-model="basicInformationForm.userName"/>
+                  <el-form-item label="用户昵称" prop="nickName">
+                    <el-input v-model="basicInformationForm.nickName"/>
                   </el-form-item>
                   <el-form-item label="手机号码" prop="phone">
                     <el-input v-model="basicInformationForm.phone"/>
@@ -101,13 +120,15 @@
                     <el-input v-model="basicInformationForm.email"/>
                   </el-form-item>
                   <el-form-item label="性别">
-                    <el-radio-group v-model="basicInformationForm.sex">
-                      <el-radio label="男"/>
-                      <el-radio label="女"/>
+                    <el-radio-group v-model="basicInformationForm.gender">
+                      <el-radio :label="1">男</el-radio>
+                      <el-radio :label="0">女</el-radio>
+<!--                      <el-radio label="男" />-->
+<!--                      <el-radio label="女" />-->
                     </el-radio-group>
                   </el-form-item>
                   <el-form-item label="">
-                    <el-button type="primary">保存</el-button>
+                    <el-button type="primary" @click="handleSaveBaseInfo">保存</el-button>
                     <el-button type="danger" @click="handleClose">关闭</el-button>
                   </el-form-item>
                 </el-form>
@@ -124,7 +145,7 @@
                     <el-input v-model="changePasswordForm.confirmPassword"/>
                   </el-form-item>
                   <el-form-item label="">
-                    <el-button type="primary">保存</el-button>
+                    <el-button type="primary" @click="handleSaveUpdatePassword">保存</el-button>
                     <el-button type="danger" @click="handleClose">关闭</el-button>
                   </el-form-item>
                 </el-form>
@@ -138,25 +159,31 @@
   </div>
 </template>
 <script setup>
-import {ref, reactive} from 'vue'
+import {ref, reactive, onMounted} from 'vue'
 import {useRouter} from "vue-router";
 import {Plus} from "@element-plus/icons-vue";
+import {getUserInfo, saveBaseInfo, saveUpdatePawword} from "@/api/personalCenter/personalCenter.js";
+import {successTools} from "@/utils/Tools";
 
 const router = useRouter();
-
+onMounted(() => {
+  handleGetUserInfo()
+})
 // 头像
 const imageUrl = ref('');
-
+// 头像FormData
+const avatarFormData = ref(null);
 const activeName = ref('first')
 // 基本资料form
-const basicInformationForm = reactive({
-  userName: "张三",
+let basicInformationForm = reactive({
+  avatar:"",
+  nickName: "张三",
   phone: "18888881388",
   email: "18888881388@qq.com",
-  isVip:false,
-  sex: "男",
-  belongingRole:"普通用户",
-  createTime:"2023-08-21 13:15:28"
+  isVip: false,
+  gender: "男",
+  belongingRole: "普通用户",
+  createTime: "2023-08-21 13:15:28"
 })
 // 修改密码form
 const changePasswordForm = reactive({
@@ -166,7 +193,7 @@ const changePasswordForm = reactive({
 })
 // 个人信息 form表单验证规则
 const basicInformationRules = reactive({
-  userName: [
+  nickName: [
     {required: true, message: '请输入用户名称', trigger: 'change'}
   ],
   phone: [
@@ -197,26 +224,69 @@ const changePasswordRules = reactive({
     }
   ]
 })
-// 头像上传成功
-const handleAvatarSuccess = (response, uploadFile) => {
-  imageUrl.value = URL.createObjectURL(uploadFile.raw)
+/**
+ * 上传头像预处理
+ * @param file 上传的头像
+ */
+const beforeUpload = (file) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => {
+    basicInformationForm.avatar = reader.result;
+    const formData = new FormData();
+    formData.append("file", file);
+    avatarFormData.value = formData;
+  }
 }
 // 关闭按钮
 const handleClose = () => {
 //   跳转到主页面
   router.replace("/index")
 }
+// 覆盖默认上传头像方法
+const requestUpload = () => {
+}
+// 获取用户信息
+const handleGetUserInfo=()=>{
+  getUserInfo().then(res => {
+    if (res.code==200){
+      console.log(basicInformationForm)
+      Object.assign(basicInformationForm,res.data)
+      console.log(basicInformationForm)
+    }
+  })
+}
+// 保存基本信息
+const handleSaveBaseInfo=()=>{
+  saveBaseInfo(basicInformationForm).then(res=>{
+    if (res.code==200){
+      successTools("操作成功")
+      handleGetUserInfo()
+    }
+  })
+}
+// 保存修改密码
+const handleSaveUpdatePassword=()=>{
+  saveUpdatePawword(changePasswordForm).then(res=>{
+    if (res.code==200){
+      successTools("操作成功")
+    }
+  })
+}
 </script>
 <style lang="scss" scoped>
 .container {
   width: 100%;
+  min-height: calc(100vh - 122px - 45px);
   padding: 10px 20px 20px 20px;
   box-sizing: border-box;
+
   .personalInformationBody {
     .uploadAvatar {
       display: flex;
       align-items: center;
       justify-content: center;
+
       .avatar-uploader {
         width: 120px;
         height: 120px;
@@ -244,21 +314,28 @@ const handleClose = () => {
         width: 120px;
         height: 120px;
         text-align: center;
+
+        &:hover {
+          opacity: 0.3;
+        }
       }
     }
-    .personalInformationItem{
+
+    .personalInformationItem {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 16px;
-      .key{
+      font-size: 14px;
+
+      .key {
         display: flex;
         align-items: center;
       }
     }
-    .el-divider{
-      margin-top: 12px ;
-      margin-bottom: 12px ;
+
+    .el-divider {
+      margin-top: 12px;
+      margin-bottom: 12px;
     }
   }
 }
