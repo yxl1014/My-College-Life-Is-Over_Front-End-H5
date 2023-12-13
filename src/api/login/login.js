@@ -24,3 +24,12 @@ export function login(data) {
         data:data
     })
 }
+
+// 退出登陆
+export function logout(data) {
+    return request({
+        url: '/logout',
+        method: 'post',
+        data:data
+    })
+}

@@ -6,17 +6,11 @@
     </div>
 </template>
 <script setup>
-import axios from "axios"
-    const env=import.meta.env
-    axios.defaults.baseURL=env.VITE_BASE_API
-    function getData(){
-        axios({
-            url:"/students",
-            method:"get"
-        }).then((res)=>{
-            console.log(res);
-        })
-    }
+  import {getCodeImg} from "@/api/login/login";
+  const getData=()=>{
+    getCodeImg()
+  }
+
 </script>
 <style lang="scss" scope>
     

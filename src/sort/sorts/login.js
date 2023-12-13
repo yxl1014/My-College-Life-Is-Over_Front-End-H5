@@ -1,28 +1,28 @@
 import { defineStore } from "pinia"
 import {reactive,ref} from "vue"
 export const userInfoStore = defineStore({
-    id: "info", // id是唯一的，如果有多个文件，ID不能重复
+    id: "userInfo", // id是唯一的，如果有多个文件，ID不能重复
     state: () => {
         return {
-            userInfo:reactive({
+            userInfo:{
                 userName:"",
                 password:"",
                 isRememberPassword: false,
-            }),
-            token:ref("")
+            },
+            token:""
         }
     },
     actions: {
         setuserInfo(data) {
             console.log("data",data);
-            this.userInfo = data
+            Object.assign(this.userInfo,data)
         },
         setToken(token){
             this.token=token
         },
         // 用户退出，清除本地数据
         logout() {
-            this.userInfo = null
+            Object.assign(this.userInfo,null)
             sessionStorage.clear()
             localStorage.clear()
         },

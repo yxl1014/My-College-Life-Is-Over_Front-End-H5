@@ -186,16 +186,17 @@ import {setToken} from "@/utils/auth";
 import {encrypt, decrypt} from "@/utils/jsencrpyt";
 import Code from "@/components/Icon/Code.vue";
 import {successTools} from "@/utils/Tools";
+
+const router = useRouter();
+const sort = userInfoStore();
 // 初始化 获取图片验证码
 onMounted(() => {
+  console.log(sort.userInfo)
 //   获取验证码
   getCode('account');
   getCode('phone');
   getCode('email');
 });
-
-const router = useRouter();
-const sort = userInfoStore();
 
 // 初始化accountForm ref
 const accountFormRef = ref(null);
@@ -374,7 +375,7 @@ function submit() {
 // 获取验证码
 function getCode(type) {
   getCodeImg().then((res) => {
-    console.log(res)
+    // console.log(res)
     if (res.code == 200) {
       if (type == "account") {
         form.codeImg = "data:image/gif;base64," + res.base64Img;

@@ -33,14 +33,8 @@ const routes = [
         component: () => import("@/views/Member/RetrievePassword.vue"),
         name: "RetrievePassword",
       },
-
     ]
   },
-  // {
-  //   path: "/login",
-  //   name: "登录页面",
-  //   component: () => import("@/views/Login/Login.vue"),
-  // },
   {
     path: "",
     component: Layout,
@@ -87,7 +81,6 @@ const routes = [
       },
     ],
   },
-
   {
     path: "/401",
     component: () => import("@/views/401/401.vue")

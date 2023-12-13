@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import {reactive,ref} from "vue"
 export const sidebarStore = defineStore({
-    id: "info", // id是唯一的，如果有多个文件，ID不能重复
+    id: "sidebarState", // id是唯一的，如果有多个文件，ID不能重复
     state: () => {
         return {
             sidebarState:ref(false),

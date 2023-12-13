@@ -1,6 +1,6 @@
 import axios from "axios";
 import cache from "@/plugins/cache";
-import {getToken} from "@/utils/auth";
+import {getToken, setToken} from "@/utils/auth";
 import {useRouter} from "vue-router";
 import {errorTools} from "@/utils/Tools";
 import errorCode from "@/utils/errorCode";
@@ -74,6 +74,7 @@ service.interceptors.request.use(
         return config;
     },
     (error) => {
+        NProgress.done();
         console.log(error);
         Promise.reject(error);
     }
@@ -81,6 +82,8 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use((res) => {
     NProgress.done();
+    // 重置cookie失效时间
+    setToken(getToken())
     // 未设置状态码则默认成功状态
     const code = res.data.code || 200;
     // 获取错误信息
