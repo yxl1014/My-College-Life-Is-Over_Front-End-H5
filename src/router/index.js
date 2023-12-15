@@ -3,6 +3,7 @@ import { getToken } from "@/utils/auth";
 // ()=>component: import(""),     路由懒加载
 // redirect                       路由重定向
 // beforeEnter(to,from,next)      独享路由守卫 to 从哪来 from 到哪去 next 放行
+// hiddent                        是否在sindbar中隐藏此路由菜单
 import Layout from "@/Layout/index.vue"
 import Member from "@/Layout/Member/Member.vue"
 import NProgress from 'nprogress'
@@ -12,10 +13,12 @@ const routes = [
   {
     path: "/",
     redirect: "/index",
+    hiddent:true,
   },
   {
     path: "/member",
     component: Member,
+    hiddent: true,
     redirect: "/member/login",
     children: [
       {
@@ -39,12 +42,13 @@ const routes = [
     path: "",
     component: Layout,
     redirect: "/index",
+    meta: { title: "首页"},
     children: [
       {
         path: "index",
         component: () => import("@/views/Index/Index.vue"),
         name: "Index",
-        meta: { title: "首页" }
+        meta: { title: "首页",icon:"home-filled"  }
       }
     ]
   },
@@ -53,17 +57,17 @@ const routes = [
     name: "主页面",
     component: Layout,
     redirect: "/home/A",
-    meta: { title: "Home" },
+    meta: { title: "Home",icon:"menu"  },
     children: [
       {
         path: "A",
         component: () => import("@/views/Home/A/A.vue"),
-        meta: { title: "A" }
+        meta: { title: "A" ,icon:"tools" }
       },
       {
         path: "B",
         component: () => import("@/views/Home/B/B.vue"),
-        meta: { title: "B" }
+        meta: { title: "B" ,icon:"upload-filled" }
       },
     ],
   },
@@ -71,6 +75,7 @@ const routes = [
     path: "/user",
     name: "个人内容",
     component: Layout,
+    hiddent:true,
     redirect: "/user/personalCenter",
     meta: { title: "用户" },
     children: [
@@ -83,10 +88,12 @@ const routes = [
   },
   {
     path: "/401",
+    hiddent:true,
     component: () => import("@/views/401/401.vue")
   },
   {
     path: "/:pathMatch(.*)",
+    hiddent:true,
     component: () => import("@/views/404/404.vue"),
   },
 ];

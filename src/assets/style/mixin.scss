@@ -64,3 +64,20 @@
     color: var(--el-menu-active-color);
   }
 }
+
+/* 过渡效果的 CSS */
+.show-enter-active, .show-leave-active {
+  transition: opacity 0.5s;
+}
+.show-enter, .show-leave-to {
+  opacity: 0;
+}
+
+
+//修改el-menu 子项下拉时的背景颜色
+.el-sub-menu{
+  .el-menu.el-menu--inline{
+    background: var(--sidebar-open-background) !important;
+  }
+}
+

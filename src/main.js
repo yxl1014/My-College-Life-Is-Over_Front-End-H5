@@ -17,6 +17,10 @@ import store from "@/sort/index.js";
 // 引入router
 import router from "@/router/index.js";
 
+// 引入svg-icons注册依赖
+import 'virtual:svg-icons-register'
+import initSvgIcon from "@/components/SvgIcon/index"
+
 // 引入elementUI 图标
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import NProgress from "nprogress";
@@ -40,5 +44,6 @@ app.use(ElementPlus);
 app.use(store);
 // 应用router
 app.use(router);
-
+// 应用自定义svgIcon
+app.use(initSvgIcon);
 app.mount("#app");

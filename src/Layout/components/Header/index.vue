@@ -10,18 +10,15 @@
       <el-col :span="20">
         <div style="display: flex;align-items: center;justify-content: flex-end;padding: 0px 10px">
           <div style="display: flex;margin-right: 10px">
-            <div style="width: 80%;">
-              <!-- <el-input v-model="search.value" placeholder="Please input" v-on:blur="handleBlur" v-on:change="actionSearch"
-                v-if="search.showInput === true" />
-              <div v-if="search.value !== ''" style="background-color: aliceblue; width: 100%; height: 400%; "> -->
-              <!-- </div> -->
-              <el-select v-model="search.value" multiple filterable allow-create default-first-option :reserve-keyword="false"
-                         placeholder="Please input" v-on:change="actionSearch" v-on:blur="handleBlur" v-if="search.showInput === true">
+            <el-button icon="Search" circle @click="showSearchInput" class="button-with-transition"/>
+            <div class="mySelectRouter">
+              <el-select  :style="{width:search.showInput ? '200px' : '0px'}" ref="selectRouterRef" @keydown="filterSpace" v-model="search.value" filterable remote :reserve-keyword="false"
+                         placeholder="search" :remote-method="remoteMethod" @change="actionSearch" @blur="handleBlur" class="toggleSelect">
                 <el-option v-for="item in matchingRoutes" :key="item.meta.title" :label="item.meta.title"
                            :value="item.path"/>
               </el-select>
             </div>
-            <el-button :icon="search.icon" circle @click="showSearchInput"/>
+
           </div>
           <div class="headerFun" @click="updateTheme">
             <el-button v-if="isDark" :icon="Moon" circle/>
@@ -61,7 +58,6 @@ import {messageBox} from "@/utils/MessageBox";
 const sort = themeModeStore()
 let search = reactive({
   value: '',
-  icon: Search,
   showInput: false
 });
 // 用户是否登录
@@ -69,6 +65,9 @@ let token = ref(getToken());
 let isDark = useDark()
 const toggleDark = useToggle(isDark)
 const router = useRouter();
+// 搜索路由select框
+const selectRouterRef = ref(null)
+const matchingRoutes = reactive([])
 onMounted(() => {
   console.log(isDark)
   sort.updateThemeMode(isDark.value)
@@ -83,18 +82,25 @@ function updateTheme() {
 
 function showSearchInput() {
   search.showInput = true
+  selectRouterRef.value.focus();
 }
 
 function handleBlur() {
   search.showInput = false
 }
 
+// 自定义路由搜索方法
+const remoteMethod = (val) => {
+  console.log(val,router.options.routes)
+}
+
 function actionSearch() {
+
   console.log(search.value)
   const searchRegex = new RegExp(search.value, 'i');
 
   // 遍历路由进行模糊搜索
-  const matchingRoutes = [];
+  // const matchingRoutes = [];
 
   function searchRoutes(routes) {
     for (const route of routes) {
@@ -135,6 +141,15 @@ const handlelogout = () => {
 
   })
 }
+
+// 过滤空格
+function filterSpace(event) {
+  // 按下空格键时，阻止默认行为
+  if (event.keyCode === 32) {
+    event.preventDefault();
+  }
+}
+
 const logoUrl = ref(url + "?" + +new Date());
 
 </script>
@@ -155,13 +170,45 @@ const logoUrl = ref(url + "?" + +new Date());
     }
   }
 
+  .mySelectRouter {
+    .toggleSelect {
+      transition: width 0.5s !important;
+    }
+
+    .el-input .el-input__wrapper {
+      box-shadow: none !important;
+    }
+
+    .el-select {
+      .el-input.is-focus {
+        .el-input__wrapper {
+          box-shadow: none !important;
+        }
+      }
+
+      .el-input {
+        border: none;
+        border-bottom: 1px solid #ccc;
+        border-radius: 0;
+        box-shadow: none !important;
+
+        &:focus {
+          border-top: none;
+          border-left: none;
+          border-right: none;
+        }
+      }
+    }
+  }
+
   .headerFun {
     height: 100%;
     display: flex;
     align-items: center;
     margin-right: 10px;
+    z-index: 999;
   }
-
-
 }
+
+
 </style>
