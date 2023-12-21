@@ -12,9 +12,13 @@
           <div style="display: flex;margin-right: 10px">
             <el-button icon="Search" circle @click="showSearchInput" class="button-with-transition"/>
             <div class="mySelectRouter">
-              <el-select  :style="{width:search.showInput ? '200px' : '0px'}" ref="selectRouterRef" @keydown="filterSpace" v-model="search.value" filterable remote :reserve-keyword="false"
-                         placeholder="search" :remote-method="remoteMethod" @change="actionSearch" @blur="handleBlur" class="toggleSelect">
-                <el-option v-for="item in matchingRoutes" :key="item.meta.title" :label="item.meta.title"
+              <el-select :style="{width:search.showInput ? '200px' : '0px'}" ref="selectRouterRef" @keydown="filterSpace" v-model="search.value" filterable remote :reserve-keyword="false"
+                         placeholder="search" :remote-method="remoteMethod"  @blur="handleBlur" class="toggleSelect">
+                <template #empty>
+                  <!-- 自定义 "No data" 提示内容 -->
+                  <div style="width: 100%;height: 50px;text-align: center;line-height: 50px;font-size: 14px" @click="handleBlur">暂无数据</div>
+                </template>
+                <el-option v-for="item in matchingRoutes" :key="item.title" :label="item.title" @click="Jump(item)"
                            :value="item.path"/>
               </el-select>
             </div>
@@ -68,9 +72,11 @@ const router = useRouter();
 // 搜索路由select框
 const selectRouterRef = ref(null)
 const matchingRoutes = reactive([])
+const routersArr=reactive([])
 onMounted(() => {
   console.log(isDark)
   sort.updateThemeMode(isDark.value)
+  filterRouter()
 })
 
 function updateTheme() {
@@ -86,38 +92,48 @@ function showSearchInput() {
 }
 
 function handleBlur() {
+  selectRouterRef.value.blur()
   search.showInput = false
+}
+
+/**
+ * 过滤路由
+ */
+const filterRouter = () => {
+  const routers=router.options.routes.filter(item => !item.hiddent)
+  const arr=[]
+  for (const item of routers) {
+    //证明有子节点不止一个（目录）
+    if (item.children && item.path !== "") {
+      for (const childrenItem of item.children) {
+        const obj = {
+          path:item.path+"/"+childrenItem.path,
+          title:item.meta.title+"->"+childrenItem.meta.title
+        }
+        arr.push(obj)
+      }
+    }
+    //证明 只有一个子节点或者没有子节点 (菜单)
+    else {
+      const obj={
+        path:"/"+item.children[0].path,
+        title:item.children[0].meta.title
+      }
+      arr.push(obj)
+    }
+  }
+  Object.assign(routersArr,arr)
 }
 
 // 自定义路由搜索方法
 const remoteMethod = (val) => {
-  console.log(val,router.options.routes)
-}
-
-function actionSearch() {
-
-  console.log(search.value)
-  const searchRegex = new RegExp(search.value, 'i');
-
-  // 遍历路由进行模糊搜索
-  // const matchingRoutes = [];
-
-  function searchRoutes(routes) {
-    for (const route of routes) {
-      if (route.meta && route.meta.title && searchRegex.test(route.meta.title)) {
-        matchingRoutes.push(route);
-      }
-
-      if (route.children) {
-        searchRoutes(route.children);
-      }
-    }
+  if (val==""){
+    matchingRoutes.length=0
+    return;
   }
-
-  searchRoutes(router.options.routes);
-
-  // 处理匹配到的路由，你可以在这里更新组件状态或执行其他操作
-  console.log(matchingRoutes);
+  console.log(routersArr);
+  const arr=routersArr.filter(item=>item.title.toLowerCase().includes(val.toLowerCase()))
+  Object.assign(matchingRoutes,arr)
 }
 
 // 去登录
@@ -137,8 +153,6 @@ const handlelogout = () => {
         token.value = getToken()
       }
     })
-  }).catch(() => {
-
   })
 }
 
@@ -148,6 +162,21 @@ function filterSpace(event) {
   if (event.keyCode === 32) {
     event.preventDefault();
   }
+}
+
+/**
+ * 跳转到具体页面
+ * @param item
+ * @param item 跳转对象
+ * @constructor
+ */
+const Jump=(item)=>{
+  search.showInput = false
+  router.push(item.path)
+}
+
+const xxx=()=>{
+  console.log("xxx")
 }
 
 const logoUrl = ref(url + "?" + +new Date());

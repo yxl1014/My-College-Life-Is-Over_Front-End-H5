@@ -167,7 +167,7 @@ import {successTools} from "@/utils/Tools";
 
 const router = useRouter();
 onMounted(() => {
-  handleGetUserInfo()
+  // handleGetUserInfo()
 })
 // 头像
 const imageUrl = ref('');
