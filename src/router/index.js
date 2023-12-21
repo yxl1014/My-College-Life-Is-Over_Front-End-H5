@@ -87,6 +87,21 @@ const routes = [
     ],
   },
   {
+    path: "/system",
+    component: Layout,
+    redirect: "/system/menu",
+    meta: { title: "系统设置",icon:"setting"},
+    name:"system",
+    children: [
+      {
+        path: "menu",
+        component: () => import("@/views/System/MenuManagement/MenuManagement.vue"),
+        name: "menu",
+        meta: { title: "菜单管理",icon:"menu"  }
+      }
+    ]
+  },
+  {
     path: "/401",
     hiddent:true,
     component: () => import("@/views/401/401.vue")

@@ -10,9 +10,6 @@
       <template v-for="(item,index) in routersData">
         <el-sub-menu v-if="item.children.length!==0" :key="index" :index="item.path">
           <template #title>
-<!--            <el-icon>-->
-<!--              <component :is="item.icon"></component>-->
-<!--            </el-icon>-->
             <svg-icon :icon-class="item.icon" style="width: 25px;height: 25px;padding: 5px"/>
             <span>{{ item.title }}</span>
           </template>
@@ -26,43 +23,6 @@
           <template #title>{{ item.title }}</template>
         </el-menu-item>
       </template>
-
-      <!--      <el-menu-item index="/index">-->
-      <!--        <el-icon>-->
-      <!--          <HomeFilled/>-->
-      <!--        </el-icon>-->
-      <!--        <template #title>首页</template>-->
-      <!--      </el-menu-item>-->
-      <!--      <el-sub-menu index="/home">-->
-      <!--        <template #title>-->
-      <!--          <el-icon>-->
-      <!--            <location/>-->
-      <!--          </el-icon>-->
-      <!--          <span>Navigator Two</span>-->
-      <!--        </template>-->
-      <!--        <el-menu-item index="/home/A">A</el-menu-item>-->
-      <!--        <el-menu-item index="/home/B">B</el-menu-item>-->
-      <!--      </el-sub-menu>-->
-
-      <!--      <el-sub-menu index="3">-->
-      <!--        <template #title>-->
-      <!--          <el-icon>-->
-      <!--            <location/>-->
-      <!--          </el-icon>-->
-      <!--          <span>Navigator Three</span>-->
-      <!--        </template>-->
-      <!--        <el-menu-item index="1-1">item one</el-menu-item>-->
-      <!--        <el-menu-item index="1-2">item two</el-menu-item>-->
-      <!--        <el-menu-item index="1-3">item three</el-menu-item>-->
-      <!--        <el-menu-item index="1-4-1">item one</el-menu-item>-->
-      <!--      </el-sub-menu>-->
-
-      <!--      <el-menu-item index="4">-->
-      <!--        <el-icon>-->
-      <!--          <setting/>-->
-      <!--        </el-icon>-->
-      <!--        <template #title>Navigator Four</template>-->
-      <!--      </el-menu-item>-->
     </el-menu>
   </div>
 </template>

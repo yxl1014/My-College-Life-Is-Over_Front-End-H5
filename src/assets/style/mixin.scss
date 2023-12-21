@@ -81,3 +81,28 @@
   }
 }
 
+//修改el-form 行内样式的 el-item之间的间距
+.el-form{
+  .el-form-item{
+    margin-right: 10px;
+    label{
+      font-weight: 1000;
+    }
+  }
+}
+
+//自定义scrollBar样式
+.scrollBar {
+  &::-webkit-scrollbar-track-piece {
+    background: #d3dce6;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #99a9bf;
+    border-radius: 20px;
+  }
+}
