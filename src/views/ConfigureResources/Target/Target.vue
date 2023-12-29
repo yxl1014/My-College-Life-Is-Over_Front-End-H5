@@ -1,10 +1,11 @@
 <template >
-    <div>
-        <router-view></router-view>
-    </div>
+  <div>
+    此处配置目标服务器
+  </div>
 </template>
-<script>
+<script setup>
 
 </script>
 <style lang="scss" scoped>
+
 </style>

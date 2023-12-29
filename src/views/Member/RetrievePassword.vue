@@ -507,7 +507,7 @@ function rest(FormArr){
   })
 }
 </script>
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .RetrievePassword {
   flex: 1;
   height: 100%;

@@ -4,7 +4,7 @@
       <el-col :span="4">
         <div class="headerLogo">
           <el-image style="width: 45px; height: 45px" :src="logoUrl" fit="contain"/>
-          <span>LoadRunnerX</span>
+          <span class="appTitle">LoadRunnerX</span>
         </div>
       </el-col>
       <el-col :span="20">
@@ -13,7 +13,7 @@
             <el-button icon="Search" circle @click="showSearchInput" class="button-with-transition"/>
             <div class="mySelectRouter">
               <el-select :style="{width:search.showInput ? '200px' : '0px'}" ref="selectRouterRef" @keydown="filterSpace" v-model="search.value" filterable remote :reserve-keyword="false"
-                         placeholder="search" :remote-method="remoteMethod"  @blur="handleBlur" class="toggleSelect">
+                         placeholder="search" :remote-method="remoteMethod" @blur="handleBlur" class="toggleSelect">
                 <template #empty>
                   <!-- 自定义 "No data" 提示内容 -->
                   <div style="width: 100%;height: 50px;text-align: center;line-height: 50px;font-size: 14px" @click="handleBlur">暂无数据</div>
@@ -24,9 +24,13 @@
             </div>
 
           </div>
-          <div class="headerFun" @click="updateTheme">
-            <el-button v-if="isDark" :icon="Moon" circle/>
-            <el-button v-else :icon="Sunny" circle/>
+          <div class="headerFun">
+<!--            任务列表-->
+            <TaskDialog/>
+<!--            消息列表-->
+            <MessageDialog/>
+            <el-button v-if="isDark" :icon="Moon" circle @click="updateTheme"/>
+            <el-button v-else :icon="Sunny" circle @click="updateTheme"/>
           </div>
           <el-dropdown trigger="click" placement="bottom-end" style="margin-right: 10px" v-if="token">
             <div class="el-dropdown-link" style="display: flex;align-items: end">
@@ -52,12 +56,14 @@
 import {useRouter} from 'vue-router';
 import url from "@/assets/img/logo_transparent.png"
 import {ref, reactive, createApp, onMounted} from "vue"
-import {Sunny, Moon, Search, Plus, SwitchButton, User} from "@element-plus/icons-vue";
+import {Sunny, Moon, Search, Plus, SwitchButton, User, Sort, Refresh, ChatDotRound} from "@element-plus/icons-vue";
 import {useDark, useToggle} from '@vueuse/core'
 import {themeModeStore} from "@/sort/sort_example/themeMode";
 import {getToken, removeToken} from "@/utils/auth";
 import {logout} from "@/api/login/login";
 import {messageBox} from "@/utils/MessageBox";
+import TaskDialog from "@/components/TaskList/TaskDialog.vue";
+import MessageDialog from "@/components/MessageList/MessageDialog.vue";
 
 const sort = themeModeStore()
 let search = reactive({
@@ -72,7 +78,7 @@ const router = useRouter();
 // 搜索路由select框
 const selectRouterRef = ref(null)
 const matchingRoutes = reactive([])
-const routersArr=reactive([])
+const routersArr = reactive([])
 onMounted(() => {
   console.log(isDark)
   sort.updateThemeMode(isDark.value)
@@ -100,40 +106,40 @@ function handleBlur() {
  * 过滤路由
  */
 const filterRouter = () => {
-  const routers=router.options.routes.filter(item => !item.hiddent)
-  const arr=[]
+  const routers = router.options.routes.filter(item => !item.hiddent)
+  const arr = []
   for (const item of routers) {
     //证明有子节点不止一个（目录）
     if (item.children && item.path !== "") {
       for (const childrenItem of item.children) {
         const obj = {
-          path:item.path+"/"+childrenItem.path,
-          title:item.meta.title+"->"+childrenItem.meta.title
+          path: item.path + "/" + childrenItem.path,
+          title: item.meta.title + "->" + childrenItem.meta.title
         }
         arr.push(obj)
       }
     }
     //证明 只有一个子节点或者没有子节点 (菜单)
     else {
-      const obj={
-        path:"/"+item.children[0].path,
-        title:item.children[0].meta.title
+      const obj = {
+        path: "/" + item.children[0].path,
+        title: item.children[0].meta.title
       }
       arr.push(obj)
     }
   }
-  Object.assign(routersArr,arr)
+  Object.assign(routersArr, arr)
 }
 
 // 自定义路由搜索方法
 const remoteMethod = (val) => {
-  if (val==""){
-    matchingRoutes.length=0
+  if (val == "") {
+    matchingRoutes.length = 0
     return;
   }
   console.log(routersArr);
-  const arr=routersArr.filter(item=>item.title.toLowerCase().includes(val.toLowerCase()))
-  Object.assign(matchingRoutes,arr)
+  const arr = routersArr.filter(item => item.title.toLowerCase().includes(val.toLowerCase()))
+  Object.assign(matchingRoutes, arr)
 }
 
 // 去登录
@@ -170,19 +176,15 @@ function filterSpace(event) {
  * @param item 跳转对象
  * @constructor
  */
-const Jump=(item)=>{
+const Jump = (item) => {
   search.showInput = false
   router.push(item.path)
-}
-
-const xxx=()=>{
-  console.log("xxx")
 }
 
 const logoUrl = ref(url + "?" + +new Date());
 
 </script>
-<style lang="scss" scope>
+<style lang="scss">
 .container {
   width: 100%;
   height: 100%;
@@ -194,7 +196,7 @@ const logoUrl = ref(url + "?" + +new Date());
     align-items: center;
     height: 100%;
 
-    span {
+    .appTitle {
       margin-left: 10px;
     }
   }
@@ -229,15 +231,12 @@ const logoUrl = ref(url + "?" + +new Date());
       }
     }
   }
-
   .headerFun {
     height: 100%;
     display: flex;
     align-items: center;
     margin-right: 10px;
-    z-index: 999;
+    z-index: 99;
   }
 }
-
-
 </style>

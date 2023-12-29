@@ -29,7 +29,7 @@ import aliyun from "@/assets/img/aliyun.png"
 import tengxun from "@/assets/img/tengxunyun.png"
 
 </script>
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .loginBG {
   width: 100vw;
   height: 100vh;

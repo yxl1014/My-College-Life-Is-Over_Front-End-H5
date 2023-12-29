@@ -42,7 +42,7 @@ function back() {
   router.replace("/member/login");
 }
 </script>
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .errPage-container {
   width: 800px;
   max-width: 100%;

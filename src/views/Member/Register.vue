@@ -561,7 +561,7 @@ watch(() => accountForm.password, (newCount, oldCount) => {
   }
 })
 </script>
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .register {
   flex: 1;
   height: 100%;

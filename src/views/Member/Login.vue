@@ -446,7 +446,7 @@ const filterLoginState = computed(() => {
   }
 })
 </script>
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .login {
   flex: 1;
   height: 100%;

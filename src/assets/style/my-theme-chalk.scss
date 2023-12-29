@@ -8,6 +8,13 @@
   --body-content-illustration-background:#e6e6e654;
   --body-content-illustration-svgBackground:#ffffff;
   --body-content-middle-subtitle-color:#6f6f6f;
+  --MyPageHeader-shadow-color:#0000001E;//MyPageHeader 阴影颜色
+  --header-task-icon-background-color:#EBF5FFFF;
+  --header-task-title-color:#303113;
+  --header-message-background-color:#ECF5FFFF;
+  --header-message-border-color:#eee;
+  --indexView-icon-background-color: #F7F7F7FF;
+
 }
 html.dark {
   --theme-color: #135fad;
@@ -19,4 +26,10 @@ html.dark {
   --body-content-illustration-background:#151521;
   --body-content-illustration-svgBackground:#1B1B2AFF;
   --body-content-middle-subtitle-color:#cdcdde;
+  --MyPageHeader-shadow-color: #FFFAFAAD;
+  --header-task-icon-background-color:#0C1F32FF;
+  --header-task-title-color:#d0d0d0;
+  --header-message-background-color:#383838FF;
+  --header-message-border-color:#363636;
+  --indexView-icon-background-color: #2C2D2EFF;
 }

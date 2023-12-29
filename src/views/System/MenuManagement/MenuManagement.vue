@@ -14,7 +14,7 @@ const tableData = reactive([
     name: "主页面",
     component: Layout,
     redirect: "/home/A",
-    meta: {title: "Home", icon: "menu"},
+    meta: {title: "配置资源", icon: "menu"},
     sort: 1,
     status: true,
     createTime: "2022-10-11 12:49:52",
@@ -22,7 +22,7 @@ const tableData = reactive([
       {
         id: "4",
         path: "A",
-        component: () => import("@/views/Home/A/A.vue"),
+        component: () => import("@/views/ConfigureResources/A/A.vue"),
         meta: {title: "A", icon: "tools"},
         sort: 1,
         status: true,
@@ -31,7 +31,7 @@ const tableData = reactive([
       {
         id: "5",
         path: "B",
-        component: () => import("@/views/Home/B/B.vue"),
+        component: () => import("@/views/ConfigureResources/B/B.vue"),
         meta: {title: "B", icon: "upload-filled"},
         sort: 2,
         status: true,
@@ -93,7 +93,7 @@ const menuOptions = reactive([
     children: [
       {
         value: '2',
-        label: 'Home',
+        label: '配置资源',
         children: [
           {
             value: '2-1',
@@ -333,7 +333,6 @@ const selectedIcon = (iconName) => {
 <style scoped lang="scss">
 .container {
   width: 100%;
-  min-height: 100vh;
   box-sizing: border-box;
   padding: 20px;
 

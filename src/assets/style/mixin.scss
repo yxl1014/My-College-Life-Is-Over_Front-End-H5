@@ -106,3 +106,8 @@
     border-radius: 20px;
   }
 }
+
+//修改el-drawer 抽屉的内边距
+.el-drawer__body{
+  padding: 0px;
+}

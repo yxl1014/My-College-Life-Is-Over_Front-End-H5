@@ -54,7 +54,7 @@ function onBack(){
   router.go(-1)
 }
 </script>
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .icon {
   font-size: 1.5em;
   cursor: pointer;

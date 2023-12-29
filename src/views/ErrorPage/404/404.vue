@@ -4,22 +4,22 @@
       <div class="pic-404">
         <img
           class="pic-404__parent"
-          src="@/assets/img/404.png"
+          src="../../../assets/img/404.png"
           alt="404"
         />
         <img
           class="pic-404__child left"
-          src="@/assets/img/404_cloud.png"
+          src="../../../assets/img/404_cloud.png"
           alt="404"
         />
         <img
           class="pic-404__child mid"
-          src="@/assets/img/404_cloud.png"
+          src="../../../assets/img/404_cloud.png"
           alt="404"
         />
         <img
           class="pic-404__child right"
-          src="@/assets/img/404_cloud.png"
+          src="../../../assets/img/404_cloud.png"
           alt="404"
         />
       </div>
@@ -44,7 +44,7 @@ const message = computed(() => {
   return "找不到网页！";
 });
 </script>
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .wscn-http404-container {
   transform: translate(-50%, -50%);
   position: absolute;
