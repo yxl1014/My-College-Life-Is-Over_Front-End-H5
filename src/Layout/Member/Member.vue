@@ -34,11 +34,13 @@ import tengxun from "@/assets/img/tengxunyun.png"
   width: 100vw;
   height: 100vh;
   background: linear-gradient(to right, #337ECC, #337ECCB5);
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .content {
-    position: absolute;
-    top: 100px;
-    right: 100px;
+    //position: absolute;
+    //top: 100px;
+    //right: 100px;
     width: 800px;
     height: 500px;
 

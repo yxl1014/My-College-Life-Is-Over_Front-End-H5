@@ -59,7 +59,7 @@ function goTop() {
 
 // 立即开始
 const onStart = () => {
-  router.push("/configureResources/target")
+  router.push("/workSpace")
 }
 
 </script>
@@ -232,6 +232,8 @@ const onStart = () => {
 
   .exhibition {
     padding: 0 10px 10px;
+    background: url("@/assets/img/f12.png") no-repeat;
+    background-size: cover;
 
     .wcCard {
       height: 60vh;

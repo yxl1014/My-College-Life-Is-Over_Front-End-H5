@@ -82,10 +82,12 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use((res) => {
     NProgress.done();
-    // 重置cookie失效时间
-    setToken(getToken())
     // 未设置状态码则默认成功状态
     const code = res.data.code || 200;
+    // 重置cookie失效时间
+    if (getToken()) {
+        setToken(getToken())
+    }
     // 获取错误信息
     const msg = errorCode[code] || res.data.msg || errorCode['default']
     // 二进制数据则直接返回
@@ -102,9 +104,9 @@ service.interceptors.response.use((res) => {
             router.replace("/401")
         }
         return Promise.reject("无效的会话，或者会话已过期，请重新登录。");
-    } else if (code === 500) {
+    } else if (code === 500||code === 501||code === 502) {
         errorTools(msg)
-        return Promise.reject(new Error(msg))
+        return res.data;//Promise.reject(new Error(msg))
     } else {
         return res.data
     }

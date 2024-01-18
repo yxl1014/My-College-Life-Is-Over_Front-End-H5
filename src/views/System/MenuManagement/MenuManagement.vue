@@ -8,37 +8,37 @@ import {msgTools, successTools} from "@/utils/Tools";
 import IconList from "@/views/System/MenuManagement/IconList.vue";
 
 const tableData = reactive([
-  {
-    id: "3",
-    path: "/home",
-    name: "主页面",
-    component: Layout,
-    redirect: "/home/A",
-    meta: {title: "配置资源", icon: "menu"},
-    sort: 1,
-    status: true,
-    createTime: "2022-10-11 12:49:52",
-    children: [
-      {
-        id: "4",
-        path: "A",
-        component: () => import("@/views/ConfigureResources/A/A.vue"),
-        meta: {title: "A", icon: "tools"},
-        sort: 1,
-        status: true,
-        createTime: "2022-10-11 12:49:52",
-      },
-      {
-        id: "5",
-        path: "B",
-        component: () => import("@/views/ConfigureResources/B/B.vue"),
-        meta: {title: "B", icon: "upload-filled"},
-        sort: 2,
-        status: true,
-        createTime: "2022-10-11 12:49:52",
-      },
-    ],
-  },
+  // {
+  //   id: "3",
+  //   path: "/home",
+  //   name: "主页面",
+  //   component: Layout,
+  //   redirect: "/home/A",
+  //   meta: {title: "配置资源", icon: "menu"},
+  //   sort: 1,
+  //   status: true,
+  //   createTime: "2022-10-11 12:49:52",
+  //   children: [
+  //     {
+  //       id: "4",
+  //       path: "A",
+  //       component: () => import("@/views/ConfigureResources/A/A.vue"),
+  //       meta: {title: "A", icon: "tools"},
+  //       sort: 1,
+  //       status: true,
+  //       createTime: "2022-10-11 12:49:52",
+  //     },
+  //     {
+  //       id: "5",
+  //       path: "B",
+  //       component: () => import("@/views/ConfigureResources/B/B.vue"),
+  //       meta: {title: "B", icon: "upload-filled"},
+  //       sort: 2,
+  //       status: true,
+  //       createTime: "2022-10-11 12:49:52",
+  //     },
+  //   ],
+  // },
   {
     id: "8",
     path: "/system",

@@ -6,6 +6,7 @@ import {defineConfig, loadEnv} from "vite";
 import vue from "@vitejs/plugin-vue";
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path';
+import prismjsPlugin from "vite-plugin-prismjs";
 export default ({mode}) => {
     const env = loadEnv(mode, process.cwd());
     return defineConfig({
@@ -39,6 +40,12 @@ export default ({mode}) => {
                 symbolId: "icon-[name]", // symbol的id
                 inject: "body-last", // 插入的位置
                 customDomId: "__svg__icons__dom__" // svg的id
+            }),
+            prismjsPlugin({
+                languages: 'all', // 语言
+                plugins: ['line-numbers','show-language','copy-to-clipboard','inline-color'],
+                theme: 'okaidia',// 主题
+                css: true,
             })
         ],
         resolve: {

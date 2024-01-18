@@ -6,6 +6,8 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import "@/assets/style/my-theme-chalk.scss"
 const app = createApp(App);
 
+// 引入语言包
+import locale from 'element-plus/es/locale/lang/zh-cn'
 // 引入elementUI-plus
 import ElementPlus from "element-plus";
 // 引入全局ElementPlus样式
@@ -39,7 +41,7 @@ NProgress.configure({
 })
 
 // 应用ElementPlus
-app.use(ElementPlus);
+app.use(ElementPlus,{ locale });
 // 应用sort
 app.use(store);
 // 应用router

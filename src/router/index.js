@@ -68,6 +68,20 @@ const routes = [
         ]
     },
     {
+        path: "",
+        component: Layout,
+        redirect: "/tasks",
+        meta: {title: "任务中心"},
+        children: [
+            {
+                path: "tasks",
+                component: () => import("@/views/Tasks/Tasks.vue"),
+                name: "Tasks",
+                meta: {title: "任务中心", icon: "sort"}
+            }
+        ]
+    },
+    {
         path: "/configureResources",
         name: "configureResources",
         component: Layout,

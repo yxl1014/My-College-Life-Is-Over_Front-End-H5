@@ -11,7 +11,18 @@ export function getCodeImg() {
         timeout: 20000
     })
 }
-
+// 验证验证码
+export function verifyCode(data) {
+    return request({
+        url: '/valida_code/verity_picture_code',
+        headers: {
+            isToken: false
+        },
+        method: 'post',
+        timeout: 10000,
+        data:data
+    })
+}
 // 登录
 export function login(data) {
     return request({

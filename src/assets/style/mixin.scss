@@ -111,3 +111,20 @@
 .el-drawer__body{
   padding: 0px;
 }
+
+pre {
+  overflow: hidden !important;
+  code{
+    display: inline-block;
+    padding-bottom: 20px;
+    position: relative;
+    top: 20px;
+  }
+}
+
+.el-card{
+  &:hover {
+    cursor: pointer;
+    border-color: var(--theme-color);
+  }
+}

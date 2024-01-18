@@ -488,7 +488,7 @@ function getEmailPhoneCode(EL) {
         setTimeout(() => {
           doLoop(60, EL);
         }, 500);
-        emailPhoneForm.phoneUUID = res.vcId
+        emailPhoneForm.phoneUUID = res.data.uuid
       }
     })
 
@@ -499,7 +499,12 @@ function getEmailPhoneCode(EL) {
         setTimeout(() => {
           doLoop(60, EL);
         }, 500);
-        emailPhoneForm.emailUUID = res.vcId
+        emailPhoneForm.emailUUID = res.data.uuid
+      }else {
+        console.log("w ")
+        EL.btnText = "获取验证码";
+        EL.disabled = false;
+        EL.type = "primary";
       }
     })
 

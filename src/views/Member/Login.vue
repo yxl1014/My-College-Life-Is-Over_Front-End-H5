@@ -180,7 +180,7 @@
 import {useRouter} from "vue-router";
 import {userInfoStore} from "@/sort/sorts/login.js";
 import {reactive, ref, onMounted, computed} from "vue";
-import {getCodeImg, login} from "@/api/login/login.js";
+import {getCodeImg, login, verifyCode} from "@/api/login/login.js";
 import {User, Lock} from "@element-plus/icons-vue";
 import {setToken} from "@/utils/auth";
 import {encrypt, decrypt} from "@/utils/jsencrpyt";
@@ -191,7 +191,6 @@ const router = useRouter();
 const sort = userInfoStore();
 // 初始化 获取图片验证码
 onMounted(() => {
-  console.log(sort.userInfo)
 //   获取验证码
   getCode('account');
   getCode('phone');
@@ -267,7 +266,7 @@ const phoneFormRules = reactive({
       trigger: "change"
     }
   ],
-  code:[
+  code: [
     {required: true, message: '请输入验证码!', trigger: 'change'},
   ],
   phoneCode: [
@@ -293,7 +292,7 @@ const emailFormRules = reactive({
       trigger: "change"
     }
   ],
-  code:[
+  code: [
     {required: true, message: '请输入验证码!', trigger: 'change'},
   ],
   emailCode: [
@@ -324,13 +323,20 @@ function submit() {
         const loginForm = {
           userName: form.userName,
           userPassword: form.password,
-          vcPictureCode: {
-            result: form.code,
-            vcId: form.uuid
-          }
         }
-        login(loginForm).then(res => {
-          if (res.code == 200) {
+        const codeForm = {
+          uuid: form.uuid,
+          code: form.code
+        }
+        verifyCode(codeForm).then(res => {
+          if (res.code === 200) {
+            return login(loginForm)
+          }
+        }).finally(()=>{
+          loginState.value = false
+          getCode()
+        }).then(res => {
+          if (res.code === 200) {
             if (form.isRememberPassword) {
               const cacheForm = {
                 ...form,
@@ -343,7 +349,7 @@ function submit() {
               sort.setuserInfo(form)
             }
             // 把token放到本地缓存
-            setToken(res.uuid)
+            setToken(res.data.token)
             // 跳转到主页面
             router.replace("/index");
           }
@@ -353,7 +359,6 @@ function submit() {
         }).finally(() => {
           loginState.value = false
         })
-
       }
     })
   } else if (activeName.value == "phone") {
@@ -378,13 +383,13 @@ function getCode(type) {
     // console.log(res)
     if (res.code == 200) {
       if (type == "account") {
-        form.codeImg = "data:image/gif;base64," + res.base64Img;
+        form.codeImg = "data:image/gif;base64," + res.data.base64Img;
         form.uuid = res.vcId
       } else if (type == "phone") {
-        phoneForm.codeImg = "data:image/gif;base64," + res.base64Img;
+        phoneForm.codeImg = "data:image/gif;base64," + res.data.base64Img;
         phoneForm.uuid = res.vcId
       } else if (type == "email") {
-        emailForm.codeImg = "data:image/gif;base64," + res.base64Img;
+        emailForm.codeImg = "data:image/gif;base64," + res.data.base64Img;
         emailForm.uuid = res.vcId
       }
     }

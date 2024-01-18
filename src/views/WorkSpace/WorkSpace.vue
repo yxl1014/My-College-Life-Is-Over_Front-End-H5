@@ -1,11 +1,9 @@
 <script setup>
 
 </script>
-
 <template>
-  这里是执行发送流量的页面
+开始发送请求的地
 </template>
-
-<style scoped lang="scss">
+<style lang="scss" scoped>
 
 </style>
